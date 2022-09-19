@@ -1,0 +1,78 @@
+(* Encrypt-then-MAC is IND-CCA2 *)
+
+param qEnc.
+param qDec.
+
+type mkey [fixed].
+type key [fixed].
+type macs [fixed].
+
+
+(* Assumptions about used primitves *)
+
+(* sym. encryption is IND-CPA *)
+proba Penc.
+expand IND_CPA_sym_enc(key, bitstring, bitstring, enc, dec, injbot, Z, Penc).
+
+(* Mac is SUF-CMA *)
+proba Pmac.
+expand SUF_CMA_det_mac(mkey, bitstring, macs, mac, verify, Pmac).
+
+
+(* Queries *)
+
+fun concat(bitstring, macs): bitstring [data].
+
+(* Enc-then-MAC encryption definition *)
+letfun full_enc(m: bitstring, k: key, mk: mkey) =
+  c1 <- enc(m,k);
+  concat(c1,mac(c1,mk)).
+  
+(* Enc-then-MAC decryption definition *)
+letfun full_dec(c: bitstring, k: key, mk: mkey) =
+  let concat(c1, mac1) = c in
+  (
+     if verify(c1, mk, mac1) then
+        dec(c1, k)
+     else
+        bottom
+  )
+  else
+     bottom.
+
+
+(* Oracles required for the game to proof *)
+(* store ciphertexts to exclude trivial attack *)
+table ciphertexts(bitstring).
+
+(* Enc LR-Oracle *)
+let QencLR(b0: bool, k: key, mk: mkey) = 
+    	foreach ienc <= qEnc do
+	Oenc (m1: bitstring, m2: bitstring) :=
+	if Z(m1) = Z(m2) then (* m1 and m2 have the same length *)
+	m0 <- if b0 then m1 else m2;
+	c0 <- full_enc(m0,k,mk);
+	insert ciphertexts(c0);
+	return(c0).
+	
+(* Dec-Oracle *)
+let Qdec(b0: bool, k: key, mk: mkey) =
+	foreach idec <= qDec do
+	Odec (c: bitstring) :=
+	get ciphertexts(=c) in return(bottom) else
+	return(full_dec(c,k,mk)).
+	
+
+(* Game to proof *)
+(* here: IND-CCA2 *)
+query secret b.
+
+process 
+	Ostart() :=
+	b <-R bool;
+	k <-R key;
+	mk <-R mkey;
+	return;
+	(* run QencLR and Qdec simultaneously *)
+	(run QencLR(b,k,mk) | run Qdec(b,k,mk))
+	
