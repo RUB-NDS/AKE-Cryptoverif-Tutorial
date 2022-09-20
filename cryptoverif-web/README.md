@@ -19,6 +19,12 @@ The output should appear within a couple of seconds. If nothing shows up, check 
 You can also build a standalone binary and run it with node directly on the command line, see
 the example in the Dockerfile.
 
+Snippet: To inject a file at runtime, this can be done:
+
+    window.caml_fs_tmp = [ { name: "somefile.cv", content: "xxx" } ]
+    cryptoverif(window)  // window.process.argv points at "somefile.cv"
+
+
 ---
 
 Here are some instructions how to build a webworker, taken from:
