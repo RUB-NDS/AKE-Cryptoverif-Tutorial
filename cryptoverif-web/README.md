@@ -1,5 +1,8 @@
 This is a proof-of-concept for running cryptoverif on the web.
 
+Limitation: m4 preprocessor is not available, so only .cv files can be processed, not .pvc. For now, preprocess files with m4 manually instead.
+Of course, an actual m4 js implementation could also be integrated at some point.
+
 To actually make this useful, the whole JS operation should be moved to a webworker, so that
 the output can be processed asynchronous. Currently, the rendering of the page blocks while
 cryptoverif does its magic, so that we can not see incremental output.
