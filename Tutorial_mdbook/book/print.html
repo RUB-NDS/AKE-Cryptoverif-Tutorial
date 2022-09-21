@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> 🔧 Installation</a></li><li class="chapter-item expanded "><a href="first_proof.html"><strong aria-hidden="true">2.</strong> 📚 First Proof</a></li><li class="chapter-item expanded "><a href="challenges.html"><strong aria-hidden="true">3.</strong> 💡 Challenges</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="motivation.html"><strong aria-hidden="true">1.</strong> ❓ Motivation</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> 🔧 Installation</a></li><li class="chapter-item expanded "><a href="first_proof.html"><strong aria-hidden="true">3.</strong> 📚 First Proof</a></li><li class="chapter-item expanded "><a href="challenges.html"><strong aria-hidden="true">4.</strong> 💡 Challenges</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,7 +143,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="-installation"><a class="header" href="#-installation">🔧 Installation</a></h1>
+                        <h1 id="-motivation"><a class="header" href="#-motivation">❓ Motivation</a></h1>
+<h2 id="what-is-cryptoverif"><a class="header" href="#what-is-cryptoverif">What is CryptoVerif?</a></h2>
+<blockquote>
+<p>formalizes sequence of games (game hopping)<br />
+computes bound on advantage</p>
+</blockquote>
+<h2 id="why-you-should-learn-about-it"><a class="header" href="#why-you-should-learn-about-it">Why you should learn about it</a></h2>
+<blockquote>
+<p>confirm your manual proofs<br />
+CryptoVerif cannot find attacks BUT failed proof may help you to find such an attack (on a protocol you considered and &quot;proofed&quot; to be secure)</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-installation"><a class="header" href="#-installation">🔧 Installation</a></h1>
+<!---
+add GitHub Link to avoid licence clicking (if Bruno allows it)
+--->
 <blockquote>
 <p>ℹ️ This tutorial only shows how to install CryptoVerif and its requirements on <strong>Ubuntu</strong>.<br />
 It is also possible to run CryptoVerif under other Linux distributions and Windows.<br />
@@ -195,6 +209,11 @@ eval $(opam env)
 <p>ℹ️ Having problems with the installation? Take a look at the <em>README</em> file in the downloaded CryptoVerif folder.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-first-proof"><a class="header" href="#-first-proof">📚 First Proof</a></h1>
+<!---
+TODO:
+how parameters of oracles are defined
+difference Oracle and Process
+--->
 <blockquote>
 <p>Goal: Show Enc-then-Mac IND-CPA if ENC IND-CPA and MAC SUF-CMA</p>
 </blockquote>
@@ -208,7 +227,8 @@ eval $(opam env)
 </blockquote>
 <h3 id="cryptographic-assumptions"><a class="header" href="#cryptographic-assumptions">Cryptographic assumptions</a></h3>
 <blockquote>
-<p>expand IND-CPA, SUF-CMA</p>
+<p>expand IND-CPA, SUF-CMA (proba Pmac.)<br />
+explain technical side: e.g. IND-CPA replaces message with Z(m1),Z(m2) (same bitstring)</p>
 </blockquote>
 <h3 id="definition-enc-then-mac"><a class="header" href="#definition-enc-then-mac">Definition Enc-then-Mac</a></h3>
 <blockquote>
@@ -216,7 +236,14 @@ eval $(opam env)
 </blockquote>
 <h3 id="initial-game-to-prove-including-oracles"><a class="header" href="#initial-game-to-prove-including-oracles">Initial game to prove (including oracles)</a></h3>
 <blockquote>
-<p>QencLR (oracle) and OStart (first game)</p>
+<p>QencLR (oracle)<br />
+talk about replication (foreach i &lt;= qEnc do)
+if branches cannot be merged</p>
+</blockquote>
+<blockquote>
+<p>OStart (first game)
+talk about queries (query secret b.)
+talk about run</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-challenges"><a class="header" href="#-challenges">💡 Challenges</a></h1>
 <h2 id="enc-and-mac"><a class="header" href="#enc-and-mac">Enc-and-Mac</a></h2>
@@ -230,7 +257,7 @@ Try to understand why proof fails in CryptoVerif.</p>
 For this task you need to rewrite the defintion of <em>full_enc</em> to match Enc-and-Mac instead of Enc-then-Mac.</p>
 </details>
 <blockquote>
-<p>collapsible solution containing</p>
+<p><strong>Solution</strong>:</p>
 <ol>
 <li>rewritten definition of Enc-and-Mac (should be super easy that students understand themselves)</li>
 <li>explanation what the problem is (cannot merge branches in Game 7)</li>
@@ -244,15 +271,34 @@ For this task you need to rewrite the defintion of <em>full_enc</em> to match En
 <p>Emphasize that CryptoVerif <strong>cannot</strong> prove insecurity of protocols.</p>
 </blockquote>
 <h2 id="enc-then-mac-ind-cca2"><a class="header" href="#enc-then-mac-ind-cca2">Enc-then-Mac IND-CCA2</a></h2>
+<!--- Links to IND-CPA, IND-CCA2,... --->
 <blockquote>
 <p>Prove Enc-then-Mac is IND-CCA2</p>
 </blockquote>
 <blockquote>
-<p>Solution:</p>
+<p><strong>Hints</strong>:<br />
+1.1 consider the differences between IND-CPA and IND-CCA2<br />
+1.2 told CryptoVerif how Enc-then-Mac is decrypted?<br />
+1.3 added oracle for decryption?<br />
+1.4 remember that if branches cannot be merged<br />
+2.1 Remember to exclude trivial win<br />
+2.2 tables syntax:</p>
+</blockquote>
+<pre><code>table tbl_name(type_to_store).
+insert tbl_name(obj_to_insert);
+get tbl_name(=obj_to_search) in do_true else do_false
+</code></pre>
+<blockquote>
+<p>3 run oracles simultaneous:</p>
+</blockquote>
+<pre><code>(run Oracle1(a,b) | run Oracle2(c,d,e))
+</code></pre>
+<blockquote>
+<p><strong>Solution</strong>:</p>
 <ol>
 <li>Add <em>full_dec()</em></li>
 <li>Add Dec oracle</li>
-<li>modify Enc and Dec oracle to exclude trivial attack (using table of ciphertexts)</li>
+<li>modify Enc and Dec oracle to exclude trivial win (using table of ciphertexts)</li>
 <li>run oracles simultaneous</li>
 </ol>
 </blockquote>

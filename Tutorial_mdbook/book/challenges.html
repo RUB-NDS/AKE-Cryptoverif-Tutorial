@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> 🔧 Installation</a></li><li class="chapter-item expanded "><a href="first_proof.html"><strong aria-hidden="true">2.</strong> 📚 First Proof</a></li><li class="chapter-item expanded "><a href="challenges.html" class="active"><strong aria-hidden="true">3.</strong> 💡 Challenges</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="motivation.html"><strong aria-hidden="true">1.</strong> ❓ Motivation</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> 🔧 Installation</a></li><li class="chapter-item expanded "><a href="first_proof.html"><strong aria-hidden="true">3.</strong> 📚 First Proof</a></li><li class="chapter-item expanded "><a href="challenges.html" class="active"><strong aria-hidden="true">4.</strong> 💡 Challenges</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -154,7 +154,7 @@ Try to understand why proof fails in CryptoVerif.</p>
 For this task you need to rewrite the defintion of <em>full_enc</em> to match Enc-and-Mac instead of Enc-then-Mac.</p>
 </details>
 <blockquote>
-<p>collapsible solution containing</p>
+<p><strong>Solution</strong>:</p>
 <ol>
 <li>rewritten definition of Enc-and-Mac (should be super easy that students understand themselves)</li>
 <li>explanation what the problem is (cannot merge branches in Game 7)</li>
@@ -168,15 +168,34 @@ For this task you need to rewrite the defintion of <em>full_enc</em> to match En
 <p>Emphasize that CryptoVerif <strong>cannot</strong> prove insecurity of protocols.</p>
 </blockquote>
 <h2 id="enc-then-mac-ind-cca2"><a class="header" href="#enc-then-mac-ind-cca2">Enc-then-Mac IND-CCA2</a></h2>
+<!--- Links to IND-CPA, IND-CCA2,... --->
 <blockquote>
 <p>Prove Enc-then-Mac is IND-CCA2</p>
 </blockquote>
 <blockquote>
-<p>Solution:</p>
+<p><strong>Hints</strong>:<br />
+1.1 consider the differences between IND-CPA and IND-CCA2<br />
+1.2 told CryptoVerif how Enc-then-Mac is decrypted?<br />
+1.3 added oracle for decryption?<br />
+1.4 remember that if branches cannot be merged<br />
+2.1 Remember to exclude trivial win<br />
+2.2 tables syntax:</p>
+</blockquote>
+<pre><code>table tbl_name(type_to_store).
+insert tbl_name(obj_to_insert);
+get tbl_name(=obj_to_search) in do_true else do_false
+</code></pre>
+<blockquote>
+<p>3 run oracles simultaneous:</p>
+</blockquote>
+<pre><code>(run Oracle1(a,b) | run Oracle2(c,d,e))
+</code></pre>
+<blockquote>
+<p><strong>Solution</strong>:</p>
 <ol>
 <li>Add <em>full_dec()</em></li>
 <li>Add Dec oracle</li>
-<li>modify Enc and Dec oracle to exclude trivial attack (using table of ciphertexts)</li>
+<li>modify Enc and Dec oracle to exclude trivial win (using table of ciphertexts)</li>
 <li>run oracles simultaneous</li>
 </ol>
 </blockquote>

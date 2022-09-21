@@ -1,5 +1,7 @@
 # 🔧 Installation
-
+<!---
+add GitHub Link to avoid licence clicking (if Bruno allows it)
+--->
 > ℹ️ This tutorial only shows how to install CryptoVerif and its requirements on **Ubuntu**.  
 > It is also possible to run CryptoVerif under other Linux distributions and Windows.  
 > For information take a look at the _README_ file in the downloaded CryptoVerif folder.

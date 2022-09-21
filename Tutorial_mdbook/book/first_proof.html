@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> 🔧 Installation</a></li><li class="chapter-item expanded "><a href="first_proof.html" class="active"><strong aria-hidden="true">2.</strong> 📚 First Proof</a></li><li class="chapter-item expanded "><a href="challenges.html"><strong aria-hidden="true">3.</strong> 💡 Challenges</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="motivation.html"><strong aria-hidden="true">1.</strong> ❓ Motivation</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> 🔧 Installation</a></li><li class="chapter-item expanded "><a href="first_proof.html" class="active"><strong aria-hidden="true">3.</strong> 📚 First Proof</a></li><li class="chapter-item expanded "><a href="challenges.html"><strong aria-hidden="true">4.</strong> 💡 Challenges</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,6 +143,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="-first-proof"><a class="header" href="#-first-proof">📚 First Proof</a></h1>
+<!---
+TODO:
+how parameters of oracles are defined
+difference Oracle and Process
+--->
 <blockquote>
 <p>Goal: Show Enc-then-Mac IND-CPA if ENC IND-CPA and MAC SUF-CMA</p>
 </blockquote>
@@ -156,7 +161,8 @@
 </blockquote>
 <h3 id="cryptographic-assumptions"><a class="header" href="#cryptographic-assumptions">Cryptographic assumptions</a></h3>
 <blockquote>
-<p>expand IND-CPA, SUF-CMA</p>
+<p>expand IND-CPA, SUF-CMA (proba Pmac.)<br />
+explain technical side: e.g. IND-CPA replaces message with Z(m1),Z(m2) (same bitstring)</p>
 </blockquote>
 <h3 id="definition-enc-then-mac"><a class="header" href="#definition-enc-then-mac">Definition Enc-then-Mac</a></h3>
 <blockquote>
@@ -164,7 +170,14 @@
 </blockquote>
 <h3 id="initial-game-to-prove-including-oracles"><a class="header" href="#initial-game-to-prove-including-oracles">Initial game to prove (including oracles)</a></h3>
 <blockquote>
-<p>QencLR (oracle) and OStart (first game)</p>
+<p>QencLR (oracle)<br />
+talk about replication (foreach i &lt;= qEnc do)
+if branches cannot be merged</p>
+</blockquote>
+<blockquote>
+<p>OStart (first game)
+talk about queries (query secret b.)
+talk about run</p>
 </blockquote>
 
                     </main>
