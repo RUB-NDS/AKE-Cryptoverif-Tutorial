@@ -4,6 +4,19 @@
 > Try to prove Enc-and-Mac is IND-CPA (which it is NOT).  
 > Try to understand why proof fails in CryptoVerif.
 
+<a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-and-MAC_(E&M)" target="_blank">Enc-and-Mac</a>
+
+
+<img style="float:right" src="img/EncAndMac.png">
+
+The Enc-and-Mac construction works as follows.
+
+1. Encrypt the plaintext resulting in a ciphertext.
+2. Compute the Mac over the plaintext.
+3. Concatenate the ciphertext and this Mac.
+
+You can see a visualization of this construction on the right-hand side.
+
 <details>
   <summary>❓ Don´t know how to proceed? Click here.</summary>
   
@@ -28,6 +41,8 @@ Insert solution here
 <!--- Links to IND-CPA, IND-CCA2,... --->
 > Prove Enc-then-Mac is IND-CCA2
 
+<a href="https://en.wikipedia.org/wiki/Ciphertext_indistinguishability#Indistinguishability_under_chosen_ciphertext_attack/adaptive_chosen_ciphertext_attack_(IND-CCA1,_IND-CCA2)" target="_blank">IND-CCA2</a>
+
 > **Hints**:  
 > 1.1 consider the differences between IND-CPA and IND-CCA2  
 > 1.2 told CryptoVerif how Enc-then-Mac is decrypted?  
@@ -36,13 +51,17 @@ Insert solution here
 > 2.1 Remember to exclude trivial win  
 > 2.2 tables syntax:
 
-	table tbl_name(type_to_store).
-	insert tbl_name(obj_to_insert);
-	get tbl_name(=obj_to_search) in do_true else do_false
+```
+table tbl_name(type_to_store).
+insert tbl_name(obj_to_insert);
+get tbl_name(=obj_to_search) in do_true else do_false
+```
 	
 > 3 run oracles simultaneous:
 
-	(run Oracle1(a,b) | run Oracle2(c,d,e))
+```
+(run Oracle1(a,b) | run Oracle2(c,d,e))
+```
 	
 
 > **Solution**:  

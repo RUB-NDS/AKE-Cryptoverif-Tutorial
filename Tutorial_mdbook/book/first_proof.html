@@ -148,37 +148,69 @@ TODO:
 how parameters of oracles are defined
 difference Oracle and Process
 --->
-<blockquote>
-<p>Goal: Show Enc-then-Mac IND-CPA if ENC IND-CPA and MAC SUF-CMA</p>
-</blockquote>
+<p>In this chapter we will have a look at a first proof using CryptoVerif. You will be guided to gather an understanding of how to work with CryptoVerif.</p>
+<p>We will consider the 
+<a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-then-MAC_(EtM)" target="_blank">Enc-then-Mac</a>
+construction. Our goal is to show that Enc-then-Mac is
+<a href="https://en.wikipedia.org/wiki/Ciphertext_indistinguishability#Indistinguishability_under_chosen-plaintext_attack_(IND-CPA)" target="_blank">IND-CPA</a>
+secure, assuming the symmetric encryption is
+<a href="https://en.wikipedia.org/wiki/Ciphertext_indistinguishability#Indistinguishability_under_chosen-plaintext_attack_(IND-CPA)" target="_blank">IND-CPA</a>
+secure and the MAC is
+<a href="https://en.wikipedia.org/wiki/Digital_signature_forgery#Weak_existential_forgery_(strong_existential_unforgeability,_strong_unforgeability;_sEUF,_or_SUF)" target="_blank">SUF-CMA</a>
+secure.</p>
 <h2 id="enc-then-mac"><a class="header" href="#enc-then-mac">Enc-then-Mac</a></h2>
-<blockquote>
-<p>How does Enc-then-Mac work</p>
-</blockquote>
+<img style="float:right" src="img/EncThenMac.png" alt="Could not load image.">
+<p>The Enc-then-Mac construction works as follows.</p>
+<ol>
+<li>Encrypt the plaintext resulting in a ciphertext.</li>
+<li>Compute the Mac over this ciphertext.</li>
+<li>Concatenate the ciphertext and this Mac.</li>
+</ol>
+<p>You can see a visualization of this construction on the right-hand side.</p>
 <h2 id="input-file"><a class="header" href="#input-file">Input file</a></h2>
+<p>In this section we will build the input file for the proof together. CryptoVerif takes this file and tries to prove the queries we defined using the sequence of games technique.</p>
 <blockquote>
-<p>Lets build input file together</p>
+<p>ℹ️ Note that we will not strictly walk through every line of code from the top to the bottom. We will skip some lines for didactic reasons and explain them in the last section <strong>Further Code</strong>.</p>
 </blockquote>
 <h3 id="cryptographic-assumptions"><a class="header" href="#cryptographic-assumptions">Cryptographic assumptions</a></h3>
+<p>We start with the cryptographic assumptions we make for the cryptographic primitives used. In our case this is that the symmetric encryption is IND-CPA secure and the MAC is SUF-CMA secure.</p>
+<p>CryptoVerif provides a library containing many standard cryptographic assumptions you can use (see
+<a href="https://github.com/cn-lk666/CryptoVerif/blob/main/manual.pdf" target="_blank">manual</a>
+, Chapter 6). But you can also create your own assumptions.</p>
+<p>You can see the code snippets for telling CryptoVerif that <em>enc</em> is IND-CPA secure and <em>mac</em> is SUF-CMA secure in the following.
+<img src="img/FirstProof_Assumptions.png" alt="Could not load image." /></p>
 <blockquote>
-<p>expand IND-CPA, SUF-CMA (proba Pmac.)<br />
-explain technical side: e.g. IND-CPA replaces message with Z(m1),Z(m2) (same bitstring)</p>
+<p>explain technical side: e.g. IND-CPA replaces message with Z(m1),Z(m2) (same bitstring)</p>
 </blockquote>
 <h3 id="definition-enc-then-mac"><a class="header" href="#definition-enc-then-mac">Definition Enc-then-Mac</a></h3>
 <blockquote>
 <p>letfun full_enc()</p>
 </blockquote>
+<p><img src="img/FirstProof_EncThenMac.png" alt="Could not load image." /></p>
 <h3 id="initial-game-to-prove-including-oracles"><a class="header" href="#initial-game-to-prove-including-oracles">Initial game to prove (including oracles)</a></h3>
 <blockquote>
 <p>QencLR (oracle)<br />
-talk about replication (foreach i &lt;= qEnc do)
+talk about replication (foreach i &lt;= qEnc do)<br />
+param qEnc. definded at top of file<br />
 if branches cannot be merged</p>
 </blockquote>
+<p><img src="img/FirstProof_EncOracle.png" alt="Could not load image." /></p>
 <blockquote>
-<p>OStart (first game)
-talk about queries (query secret b.)
+<p>OStart (first game)<br />
+talk about queries (query secret b.)<br />
 talk about run</p>
 </blockquote>
+<p><img src="img/FirstProof_Queries.png" alt="Could not load image." /></p>
+<p><img src="img/FirstProof_InitalGame.png" alt="Could not load image." /></p>
+<h3 id="further-code"><a class="header" href="#further-code">Further Code</a></h3>
+<blockquote>
+<p>type mkey [fixed]. etc.<br />
+fun concat</p>
+</blockquote>
+<p><img src="img/FirstProof_ParamsTypes.png" alt="Could not load image." /></p>
+<p><img src="img/FirstProof_Concat.png" alt="Could not load image." /></p>
+<p>You can find the input file <em>enc-then-MAC-IND-CPA.ocv</em>
+<a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/tutorial/enc-then-MAC-IND-CPA.ocv" target="_blank">here</a>.</p>
 
                     </main>
 

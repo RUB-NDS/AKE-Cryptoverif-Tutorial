@@ -148,6 +148,15 @@
 <p>Try to prove Enc-and-Mac is IND-CPA (which it is NOT).<br />
 Try to understand why proof fails in CryptoVerif.</p>
 </blockquote>
+<p><a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-and-MAC_(E&M)" target="_blank">Enc-and-Mac</a></p>
+<img style="float:right" src="img/EncAndMac.png">
+<p>The Enc-and-Mac construction works as follows.</p>
+<ol>
+<li>Encrypt the plaintext resulting in a ciphertext.</li>
+<li>Compute the Mac over the plaintext.</li>
+<li>Concatenate the ciphertext and this Mac.</li>
+</ol>
+<p>You can see a visualization of this construction on the right-hand side.</p>
 <details>
   <summary>❓ Don´t know how to proceed? Click here.</summary>
 <p>The input file is almost the same as <em>enc-then-MAC-IND-CPA.ocv</em> discussed in the first proof.<br />
@@ -172,6 +181,7 @@ For this task you need to rewrite the defintion of <em>full_enc</em> to match En
 <blockquote>
 <p>Prove Enc-then-Mac is IND-CCA2</p>
 </blockquote>
+<p><a href="https://en.wikipedia.org/wiki/Ciphertext_indistinguishability#Indistinguishability_under_chosen_ciphertext_attack/adaptive_chosen_ciphertext_attack_(IND-CCA1,_IND-CCA2)" target="_blank">IND-CCA2</a></p>
 <blockquote>
 <p><strong>Hints</strong>:<br />
 1.1 consider the differences between IND-CPA and IND-CCA2<br />
