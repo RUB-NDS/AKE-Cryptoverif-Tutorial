@@ -4,8 +4,13 @@
 > Try to prove Enc-and-Mac is IND-CPA (which it is NOT).  
 > Try to understand why proof fails in CryptoVerif.
 
+In the first challenge we will consider the
 <a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-and-MAC_(E&M)" target="_blank">Enc-and-Mac</a>
+construction. The assumptions on the cryptographic primitives are the same as in the chapter **First Proof**. The symmetric encryption is IND-CPA secure and the MAC is SUF-CMA secure.
 
+**Try** to prove that Enc-and-Mac is IND-CPA secure using CryptoVerif. As you may already know that cannot be proven as attacks exist.  
+In this challenge you should inspect CryptoVerif´s output and understand why the sequence of games failed.  
+Note that CryptoVerif **cannot find attacks**. However, you should use CryptoVerif´s output to derive a concrete attack on the Enc-and-Mac construction.
 
 <img style="float:right" src="img/EncAndMac.png">
 
@@ -19,9 +24,10 @@ You can see a visualization of this construction on the right-hand side.
 
 <details>
   <summary>❓ Don´t know how to proceed? Click here.</summary>
-  
-The input file is almost the same as _enc-then-MAC-IND-CPA.ocv_ discussed in the first proof.  
-For this task you need to rewrite the defintion of _full\_enc_ to match Enc-and-Mac instead of Enc-then-Mac.
+
+
+> The input file is almost the same as _enc-then-MAC-IND-CPA.ocv_ discussed in the chapter **First Proof**.  
+> For this task you need to **rewrite the defintion** of _full\_enc_ to match Enc-and-Mac instead of Enc-then-Mac.
 </details>
 
 > **Solution**:  
@@ -29,12 +35,23 @@ For this task you need to rewrite the defintion of _full\_enc_ to match Enc-and-
 > 2. explanation what the problem is (cannot merge branches in Game 7)
 
 <details>
-  <summary>Click here to show solution.</summary>
+  <summary><b>Show solution</b></summary>
   
-Insert solution here
+  <details>
+    <summary><b>Solution: Definition Enc-and-Mac</b></summary>
+    
+  ![Could not load image.](img/Challenge_Fail_EncAndMac.png)
+  </details>
+
+  <details>
+    <summary><b>Explanation: How the proof fails</b></summary>
+    
+> Insert Explanation how proof fails
+  </details>
 </details>
 
 > Emphasize that CryptoVerif **cannot** prove insecurity of protocols.
+> derive attack on Enc-and-Mac using failed proof
 
 
 ## Enc-then-Mac IND-CCA2
@@ -70,4 +87,26 @@ get tbl_name(=obj_to_search) in do_true else do_false
 > 3. modify Enc and Dec oracle to exclude trivial win (using table of ciphertexts)  
 > 4. run oracles simultaneous
 
+<details>
+  <summary><b>Show solution</b></summary>
+  
+  <details>
+    <summary><b>Solution: Decryption Enc-then-Mac</b></summary>
+    
+  ![Could not load image.](img/Challenge_CCA2_EncThenMac_Decryption.png)
+  </details>
 
+  <details>
+    <summary><b>Solution: Enc and Dec oracle (excluding trivial win)</b></summary>
+    
+  ![Could not load image.](img/Challenge_CCA2_Oracles.png)
+  
+  ![Could not load image.](img/Challenge_CCA2_Params.png)
+  </details>
+
+  <details>
+    <summary><b>Solution: Initial Game</b></summary>
+    
+  ![Could not load image.](img/Challenge_CCA2_InitialGame.png)
+  </details>
+</details>

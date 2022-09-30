@@ -148,7 +148,12 @@
 <p>Try to prove Enc-and-Mac is IND-CPA (which it is NOT).<br />
 Try to understand why proof fails in CryptoVerif.</p>
 </blockquote>
-<p><a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-and-MAC_(E&M)" target="_blank">Enc-and-Mac</a></p>
+<p>In the first challenge we will consider the
+<a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-and-MAC_(E&M)" target="_blank">Enc-and-Mac</a>
+construction. The assumptions on the cryptographic primitives are the same as in the chapter <strong>First Proof</strong>. The symmetric encryption is IND-CPA secure and the MAC is SUF-CMA secure.</p>
+<p><strong>Try</strong> to prove that Enc-and-Mac is IND-CPA secure using CryptoVerif. As you may already know that cannot be proven as attacks exist.<br />
+In this challenge you should inspect CryptoVerif´s output and understand why the sequence of games failed.<br />
+Note that CryptoVerif <strong>cannot find attacks</strong>. However, you should use CryptoVerif´s output to derive a concrete attack on the Enc-and-Mac construction.</p>
 <img style="float:right" src="img/EncAndMac.png">
 <p>The Enc-and-Mac construction works as follows.</p>
 <ol>
@@ -159,8 +164,10 @@ Try to understand why proof fails in CryptoVerif.</p>
 <p>You can see a visualization of this construction on the right-hand side.</p>
 <details>
   <summary>❓ Don´t know how to proceed? Click here.</summary>
-<p>The input file is almost the same as <em>enc-then-MAC-IND-CPA.ocv</em> discussed in the first proof.<br />
-For this task you need to rewrite the defintion of <em>full_enc</em> to match Enc-and-Mac instead of Enc-then-Mac.</p>
+<blockquote>
+<p>The input file is almost the same as <em>enc-then-MAC-IND-CPA.ocv</em> discussed in the chapter <strong>First Proof</strong>.<br />
+For this task you need to <strong>rewrite the defintion</strong> of <em>full_enc</em> to match Enc-and-Mac instead of Enc-then-Mac.</p>
+</blockquote>
 </details>
 <blockquote>
 <p><strong>Solution</strong>:</p>
@@ -170,11 +177,21 @@ For this task you need to rewrite the defintion of <em>full_enc</em> to match En
 </ol>
 </blockquote>
 <details>
-  <summary>Click here to show solution.</summary>
-<p>Insert solution here</p>
+  <summary><b>Show solution</b></summary>
+<details>
+    <summary><b>Solution: Definition Enc-and-Mac</b></summary>
+<p><img src="img/Challenge_Fail_EncAndMac.png" alt="Could not load image." /></p>
+</details>
+<details>
+    <summary><b>Explanation: How the proof fails</b></summary>
+<blockquote>
+<p>Insert Explanation how proof fails</p>
+</blockquote>
+</details>
 </details>
 <blockquote>
-<p>Emphasize that CryptoVerif <strong>cannot</strong> prove insecurity of protocols.</p>
+<p>Emphasize that CryptoVerif <strong>cannot</strong> prove insecurity of protocols.
+derive attack on Enc-and-Mac using failed proof</p>
 </blockquote>
 <h2 id="enc-then-mac-ind-cca2"><a class="header" href="#enc-then-mac-ind-cca2">Enc-then-Mac IND-CCA2</a></h2>
 <!--- Links to IND-CPA, IND-CCA2,... --->
@@ -209,6 +226,22 @@ get tbl_name(=obj_to_search) in do_true else do_false
 <li>run oracles simultaneous</li>
 </ol>
 </blockquote>
+<details>
+  <summary><b>Show solution</b></summary>
+<details>
+    <summary><b>Solution: Decryption Enc-then-Mac</b></summary>
+<p><img src="img/Challenge_CCA2_EncThenMac_Decryption.png" alt="Could not load image." /></p>
+</details>
+<details>
+    <summary><b>Solution: Enc and Dec oracle (excluding trivial win)</b></summary>
+<p><img src="img/Challenge_CCA2_Oracles.png" alt="Could not load image." /></p>
+<p><img src="img/Challenge_CCA2_Params.png" alt="Could not load image." /></p>
+</details>
+<details>
+    <summary><b>Solution: Initial Game</b></summary>
+<p><img src="img/Challenge_CCA2_InitialGame.png" alt="Could not load image." /></p>
+</details>
+</details>
 
                     </main>
 

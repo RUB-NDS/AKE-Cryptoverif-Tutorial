@@ -148,7 +148,7 @@
 <blockquote>
 <p>formalizes sequence of games (game hopping)<br />
 computes bound on advantage<br />
-pi calculus language?<br />
+probabilistic process calculus language<br />
 interactive mode</p>
 </blockquote>
 <h2 id="why-you-should-learn-about-it"><a class="header" href="#why-you-should-learn-about-it">Why you should learn about it</a></h2>
@@ -218,6 +218,7 @@ eval $(opam env)
 TODO:
 how parameters of oracles are defined
 difference Oracle and Process
+fun vs letfun
 --->
 <p>In this chapter we will have a look at a first proof using CryptoVerif. You will be guided to gather an understanding of how to work with CryptoVerif.</p>
 <p>We will consider the 
@@ -241,7 +242,7 @@ secure.</p>
 <h2 id="input-file"><a class="header" href="#input-file">Input file</a></h2>
 <p>In this section we will build the input file for the proof together. CryptoVerif takes this file and tries to prove the queries we defined using the sequence of games technique.</p>
 <blockquote>
-<p>ℹ️ Note that we will not strictly walk through every line of code from the top to the bottom. We will skip some lines for didactic reasons and explain them in the last section <strong>Further Code</strong>.</p>
+<p>ℹ️ Note that we will not strictly walk through every line of code from the top to the bottom. We will skip some lines for didactic reasons and explain them at the appropriate places.</p>
 </blockquote>
 <h3 id="cryptographic-assumptions"><a class="header" href="#cryptographic-assumptions">Cryptographic assumptions</a></h3>
 <p>We start with the cryptographic assumptions we make for the cryptographic primitives used. In our case this is that the symmetric encryption is IND-CPA secure and the MAC is SUF-CMA secure.</p>
@@ -250,12 +251,33 @@ secure.</p>
 , Chapter 6). But you can also create your own assumptions.</p>
 <p>You can see the code snippets for telling CryptoVerif that <em>enc</em> is IND-CPA secure and <em>mac</em> is SUF-CMA secure in the following.
 <img src="img/FirstProof_Assumptions.png" alt="Could not load image." /></p>
+<p>Here the already in the library defined macros <em>IND_CPA_sym_enc</em> and <em>SUF_CMA_det_mac</em> are expanded. For a better understanding we will discuss the technical side with the example of the <em>IND_CPA_sym_enc</em> marco.</p>
+<p>First, let us inspect the meaning of the parameters of this macro.</p>
+<ol>
+<li>type of keys</li>
+<li>type of plaintexts</li>
+<li>type of ciphertexts</li>
+<li>encryption function</li>
+<li>decryption function</li>
+<li>function to inject bottom symbol (decryption function needs to return bottom when decryption fails; bottom is not the same type as ciphertexts)</li>
+<li>function that returns for each bitstring a bitstring of the same length consisting only of zeroes</li>
+<li>probability of breaking the IND-CPA property</li>
+</ol>
+<p>The functions <em>enc</em>, <em>dec</em>, <em>injbot</em> and <em>Z</em> are declared by the macro. It is important that they are not declared anywhere else. They can only be used after the macro has been expanded.</p>
+<p>The types of keys, plaintexts, ciphertexts and the probability <em>Penc</em> must be declared before expanding the macro.<br />
+As you can see in the code snippet, the probability <em>Penc</em> is declared right before expanding the macro.<br />
+The types of plaintexts and ciphertexts are <em>bitstring</em>, a predefined type.<br />
+The type of keys is declared at the top of the input file, depicted in the following code snippet. There are also the type declarations for parameters for the macro <em>SUF_CMA_det_mac</em>.</p>
+<p><img src="img/FirstProof_Types.png" alt="Could not load image." /></p>
+<p>The types are annotated with the lable <strong>[fixed]</strong> meaning that, for example, an encryption key is a bitstring of fixed length. Note that CryptoVerif does not need to know the specific length. Similar as it does not need to know the specific implementation of the symmetric encryption scheme or the MAC.</p>
 <blockquote>
-<p>explain technical side: e.g. IND-CPA replaces message with Z(m1),Z(m2) (same bitstring)</p>
+<p>explain technical side: e.g. IND-CPA replaces message with Z(m1),Z(m2) (same bitstring)<br />
+explain how CryptoVerif tries to transformations (how it reacts to fails to proceed)</p>
 </blockquote>
 <h3 id="definition-enc-then-mac"><a class="header" href="#definition-enc-then-mac">Definition Enc-then-Mac</a></h3>
 <blockquote>
-<p>letfun full_enc()</p>
+<p>letfun full_enc()<br />
+letfun requires implementation vs fun does not</p>
 </blockquote>
 <p><img src="img/FirstProof_EncThenMac.png" alt="Could not load image." /></p>
 <h3 id="initial-game-to-prove-including-oracles"><a class="header" href="#initial-game-to-prove-including-oracles">Initial game to prove (including oracles)</a></h3>
@@ -266,6 +288,7 @@ param qEnc. definded at top of file<br />
 if branches cannot be merged</p>
 </blockquote>
 <p><img src="img/FirstProof_EncOracle.png" alt="Could not load image." /></p>
+<p><img src="img/FirstProof_Params.png" alt="Could not load image." /></p>
 <blockquote>
 <p>OStart (first game)<br />
 talk about queries (query secret b.)<br />
@@ -273,22 +296,36 @@ talk about run</p>
 </blockquote>
 <p><img src="img/FirstProof_Queries.png" alt="Could not load image." /></p>
 <p><img src="img/FirstProof_InitalGame.png" alt="Could not load image." /></p>
-<h3 id="further-code"><a class="header" href="#further-code">Further Code</a></h3>
+<h3 id="concat-function"><a class="header" href="#concat-function">Concat Function</a></h3>
 <blockquote>
-<p>type mkey [fixed]. etc.<br />
-fun concat</p>
+<p>fun concat</p>
 </blockquote>
-<p><img src="img/FirstProof_ParamsTypes.png" alt="Could not load image." /></p>
 <p><img src="img/FirstProof_Concat.png" alt="Could not load image." /></p>
-<p>You can find the input file <em>enc-then-MAC-IND-CPA.ocv</em>
+<h2 id="execute"><a class="header" href="#execute">Execute</a></h2>
+<p>The input file is now ready and we can execute CryptoVerif to let it try proof our query.<br />
+You can find the input file <em>enc-then-MAC-IND-CPA.ocv</em>
 <a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/tutorial/enc-then-MAC-IND-CPA.ocv" target="_blank">here</a>.</p>
+<!--- TODO: Where to put input file --->
+<p>When in the same directory as the executable <em>cryptoverif</em> you can run CryptoVerif on our created input file using the following command.</p>
+<!--- fix path -->
+<pre><code>./cryptoverif ./path/enc-then-MAC-IND-CPA.ocv
+</code></pre>
+<blockquote>
+<p>explain output of CryptoVerif<br />
+emphasize IND-CPA game hop as preparation for the first challenge</p>
+</blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-challenges"><a class="header" href="#-challenges">💡 Challenges</a></h1>
 <h2 id="enc-and-mac"><a class="header" href="#enc-and-mac">Enc-and-Mac</a></h2>
 <blockquote>
 <p>Try to prove Enc-and-Mac is IND-CPA (which it is NOT).<br />
 Try to understand why proof fails in CryptoVerif.</p>
 </blockquote>
-<p><a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-and-MAC_(E&M)" target="_blank">Enc-and-Mac</a></p>
+<p>In the first challenge we will consider the
+<a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-and-MAC_(E&M)" target="_blank">Enc-and-Mac</a>
+construction. The assumptions on the cryptographic primitives are the same as in the chapter <strong>First Proof</strong>. The symmetric encryption is IND-CPA secure and the MAC is SUF-CMA secure.</p>
+<p><strong>Try</strong> to prove that Enc-and-Mac is IND-CPA secure using CryptoVerif. As you may already know that cannot be proven as attacks exist.<br />
+In this challenge you should inspect CryptoVerif´s output and understand why the sequence of games failed.<br />
+Note that CryptoVerif <strong>cannot find attacks</strong>. However, you should use CryptoVerif´s output to derive a concrete attack on the Enc-and-Mac construction.</p>
 <img style="float:right" src="img/EncAndMac.png">
 <p>The Enc-and-Mac construction works as follows.</p>
 <ol>
@@ -299,8 +336,10 @@ Try to understand why proof fails in CryptoVerif.</p>
 <p>You can see a visualization of this construction on the right-hand side.</p>
 <details>
   <summary>❓ Don´t know how to proceed? Click here.</summary>
-<p>The input file is almost the same as <em>enc-then-MAC-IND-CPA.ocv</em> discussed in the first proof.<br />
-For this task you need to rewrite the defintion of <em>full_enc</em> to match Enc-and-Mac instead of Enc-then-Mac.</p>
+<blockquote>
+<p>The input file is almost the same as <em>enc-then-MAC-IND-CPA.ocv</em> discussed in the chapter <strong>First Proof</strong>.<br />
+For this task you need to <strong>rewrite the defintion</strong> of <em>full_enc</em> to match Enc-and-Mac instead of Enc-then-Mac.</p>
+</blockquote>
 </details>
 <blockquote>
 <p><strong>Solution</strong>:</p>
@@ -310,11 +349,21 @@ For this task you need to rewrite the defintion of <em>full_enc</em> to match En
 </ol>
 </blockquote>
 <details>
-  <summary>Click here to show solution.</summary>
-<p>Insert solution here</p>
+  <summary><b>Show solution</b></summary>
+<details>
+    <summary><b>Solution: Definition Enc-and-Mac</b></summary>
+<p><img src="img/Challenge_Fail_EncAndMac.png" alt="Could not load image." /></p>
+</details>
+<details>
+    <summary><b>Explanation: How the proof fails</b></summary>
+<blockquote>
+<p>Insert Explanation how proof fails</p>
+</blockquote>
+</details>
 </details>
 <blockquote>
-<p>Emphasize that CryptoVerif <strong>cannot</strong> prove insecurity of protocols.</p>
+<p>Emphasize that CryptoVerif <strong>cannot</strong> prove insecurity of protocols.
+derive attack on Enc-and-Mac using failed proof</p>
 </blockquote>
 <h2 id="enc-then-mac-ind-cca2"><a class="header" href="#enc-then-mac-ind-cca2">Enc-then-Mac IND-CCA2</a></h2>
 <!--- Links to IND-CPA, IND-CCA2,... --->
@@ -349,6 +398,22 @@ get tbl_name(=obj_to_search) in do_true else do_false
 <li>run oracles simultaneous</li>
 </ol>
 </blockquote>
+<details>
+  <summary><b>Show solution</b></summary>
+<details>
+    <summary><b>Solution: Decryption Enc-then-Mac</b></summary>
+<p><img src="img/Challenge_CCA2_EncThenMac_Decryption.png" alt="Could not load image." /></p>
+</details>
+<details>
+    <summary><b>Solution: Enc and Dec oracle (excluding trivial win)</b></summary>
+<p><img src="img/Challenge_CCA2_Oracles.png" alt="Could not load image." /></p>
+<p><img src="img/Challenge_CCA2_Params.png" alt="Could not load image." /></p>
+</details>
+<details>
+    <summary><b>Solution: Initial Game</b></summary>
+<p><img src="img/Challenge_CCA2_InitialGame.png" alt="Could not load image." /></p>
+</details>
+</details>
 
                     </main>
 

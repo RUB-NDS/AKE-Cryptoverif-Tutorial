@@ -1,7 +1,9 @@
 (* Encrypt-then-MAC is IND-CPA *)
 
+(* Params *)
 param qEnc.
 
+(* Types *)
 type mkey [fixed].
 type key [fixed].
 type macs [fixed].

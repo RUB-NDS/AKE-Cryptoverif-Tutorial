@@ -3,7 +3,7 @@
 ## What is CryptoVerif?
 > formalizes sequence of games (game hopping)  
 > computes bound on advantage  
-> pi calculus language?  
+> probabilistic process calculus language  
 > interactive mode  
 
 ## Why you should learn about it

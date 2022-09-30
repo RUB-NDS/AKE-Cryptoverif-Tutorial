@@ -1,16 +1,16 @@
 (* Encrypt-then-MAC is IND-CCA2 *)
 
+(* Params *)
 param qEnc.
 param qDec.
 
+(* Types *)
 type mkey [fixed].
 type key [fixed].
 type macs [fixed].
 
 
-(* Assumptions about used primitves *)
-
-(* sym. encryption is IND-CPA *)
+(* Enc is IND-CPA *)
 proba Penc.
 expand IND_CPA_sym_enc(key, bitstring, bitstring, enc, dec, injbot, Z, Penc).
 
@@ -42,7 +42,8 @@ letfun full_dec(c: bitstring, k: key, mk: mkey) =
 
 
 (* Oracles required for the game to proof *)
-(* store ciphertexts to exclude trivial attack *)
+
+(* table to store ciphertexts to exclude trivial win *)
 table ciphertexts(bitstring).
 
 (* Enc LR-Oracle *)
@@ -59,12 +60,12 @@ let QencLR(b0: bool, k: key, mk: mkey) =
 let Qdec(b0: bool, k: key, mk: mkey) =
 	foreach idec <= qDec do
 	Odec (c: bitstring) :=
+  (* check if ciphertexts has been outputed by Enc oracle *)
 	get ciphertexts(=c) in return(bottom) else
 	return(full_dec(c,k,mk)).
 	
 
-(* Game to proof *)
-(* here: IND-CCA2 *)
+(* Initial game to proof *)
 query secret b.
 
 process 
