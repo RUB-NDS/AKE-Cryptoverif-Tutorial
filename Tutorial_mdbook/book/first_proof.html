@@ -181,7 +181,7 @@ secure.</p>
 <p>You can see the code snippets for telling CryptoVerif that <em>enc</em> is IND-CPA secure and <em>mac</em> is SUF-CMA secure in the following.
 <img src="img/FirstProof_Assumptions.png" alt="Could not load image." /></p>
 <p>Here the already in the library defined macros <em>IND_CPA_sym_enc</em> and <em>SUF_CMA_det_mac</em> are expanded. For a better understanding we will discuss the technical side with the example of the <em>IND_CPA_sym_enc</em> marco.</p>
-<p>First, let us inspect the meaning of the parameters of this macro.</p>
+<p>First, let us inspect the meaning of the arguments of this macro.</p>
 <ol>
 <li>type of keys</li>
 <li>type of plaintexts</li>
@@ -196,27 +196,55 @@ secure.</p>
 <p>The types of keys, plaintexts, ciphertexts and the probability <em>Penc</em> must be declared before expanding the macro.<br />
 As you can see in the code snippet, the probability <em>Penc</em> is declared right before expanding the macro.<br />
 The types of plaintexts and ciphertexts are <em>bitstring</em>, a predefined type.<br />
-The type of keys is declared at the top of the input file, depicted in the following code snippet. There are also the type declarations for parameters for the macro <em>SUF_CMA_det_mac</em>.</p>
+The type of keys is declared at the top of the input file, depicted in the following code snippet. There are also the type declarations for arguments for the macro <em>SUF_CMA_det_mac</em>.</p>
 <p><img src="img/FirstProof_Types.png" alt="Could not load image." /></p>
 <p>The types are annotated with the lable <strong>[fixed]</strong> meaning that, for example, an encryption key is a bitstring of fixed length. Note that CryptoVerif does not need to know the specific length. Similar as it does not need to know the specific implementation of the symmetric encryption scheme or the MAC.</p>
 <blockquote>
-<p>explain technical side: e.g. IND-CPA replaces message with Z(m1),Z(m2) (same bitstring)<br />
-explain how CryptoVerif tries to transformations (how it reacts to fails to proceed)</p>
+<p>explain technical side: e.g. IND-CPA replaces plaintexts with Z(m1),Z(m2) (same bitstring)<br />
+explain how CryptoVerif tries transformations (how it reacts to fails to proceed)</p>
 </blockquote>
 <h3 id="definition-enc-then-mac"><a class="header" href="#definition-enc-then-mac">Definition Enc-then-Mac</a></h3>
+<!---Correct description of letfun and fun?--->
 <blockquote>
 <p>letfun full_enc()<br />
 letfun requires implementation vs fun does not</p>
 </blockquote>
-<p><img src="img/FirstProof_EncThenMac.png" alt="Could not load image." /></p>
-<h3 id="initial-game-to-prove-including-oracles"><a class="header" href="#initial-game-to-prove-including-oracles">Initial game to prove (including oracles)</a></h3>
+<p>Further, we need to define how Enc-then-Mac works. Otherwise CryptoVerif would not know what the construction we try to prove looks like. </p>
+<p>For the definition of the Enc-then-Mac construction we will need a function for concatenation. We will start with this function.<br />
+There are different types of functions in CryptoVerif. In this code snippet we can see <strong>letfun</strong>. Another type of functions is <strong>fun</strong>. The difference between them is that <strong>letfun</strong> requires to contain a concrete implementation of the function, whereas <strong>fun</strong> only defines the input- and output-types.</p>
+<p>The definition of the concatenation function is shown in the following.</p>
+<p><img src="img/FirstProof_Concat.png" alt="Could not load image." /></p>
 <blockquote>
-<p>QencLR (oracle)<br />
-talk about replication (foreach i &lt;= qEnc do)<br />
+<p>talk about fun, types and [data]</p>
+</blockquote>
+<p>Now that we talked about the concatenation function, we have everything we need to move on to the Enc-then-Mac construction. The definition of the Enc-then-Mac encryption is depicted in the following.</p>
+<p><img src="img/FirstProof_EncThenMac.png" alt="Could not load image." /></p>
+<p>As we want to define the exact behaviour for the Enc-then-Mac encryption we use <strong>letfun</strong> for the function <em>full_enc</em>.</p>
+<blockquote>
+<p>TODO: talk about oracles ()= and where to put &quot;;&quot; and &quot;.&quot;</p>
+</blockquote>
+<p>The function has three arguments that are needed.<br />
+First, there is the plaintext <em>m</em> of type <em>bitstring</em>. In CryptoVerif we usually consider plain- and ciphertexts as bitstrings. This means we consider cryptographic primitives (e.g. encryption) as mappings from bitstrings to bitstrings.<br />
+Further there are the encryption key <em>k</em> of type <em>key</em>, and the MAC key <em>mk</em> of type <em>mkey</em>.</p>
+<p>We will use the encryption function <em>enc</em> declared inside of the macro <em>IND_CPA_sym_enc</em> to compute the encryption of the plaintext <em>m</em> under the encryption key <em>k</em>. This ciphertext is then stored inside the variable <em>c1</em>.<br />
+Next, we concatenate the ciphertext <em>c1</em> with the MAC of the ciphertext <em>c1</em> under the MAC key <em>mk</em>. This concatenation is the result of our Enc-then-Mac encryption function <em>full_enc</em>.</p>
+<h3 id="initial-game-to-prove-including-oracles"><a class="header" href="#initial-game-to-prove-including-oracles">Initial game to prove (including oracles)</a></h3>
+<p>Now we want to define the initial game CryptoVerif should try to proof using the sequence of games. In our example this is the IND-CPA game. Note that for many games there are oracles the adversary can query. Here, an encryption oracle from the IND-CPA game is required. We will start with this oracle before proceeding with the initial game.</p>
+<blockquote>
+<p>QencLR (oracle)  difference = and :=</p>
+</blockquote>
+<p>The code of the encryption oracle is depicted below.</p>
+<p><img src="img/FirstProof_EncOracle.png" alt="Could not load image." /></p>
+<blockquote>
+<p>talk about keyword <strong>let</strong> and oracles<br />
+talk about equivalency of IND-CPA and LoR-CPA</p>
+</blockquote>
+<p>The oracle is implemented as a left-or-right oracle. That means that the oracle receives two plaintexts in each query made by the adversary and always encrypts the left plaintext or always encrypts the right plaintext depending on the value of <em>b</em>.</p>
+<blockquote>
+<p>talk about replication (foreach i &lt;= qEnc do)<br />
 param qEnc. definded at top of file<br />
 if branches cannot be merged</p>
 </blockquote>
-<p><img src="img/FirstProof_EncOracle.png" alt="Could not load image." /></p>
 <p><img src="img/FirstProof_Params.png" alt="Could not load image." /></p>
 <blockquote>
 <p>OStart (first game)<br />
@@ -225,11 +253,6 @@ talk about run</p>
 </blockquote>
 <p><img src="img/FirstProof_Queries.png" alt="Could not load image." /></p>
 <p><img src="img/FirstProof_InitalGame.png" alt="Could not load image." /></p>
-<h3 id="concat-function"><a class="header" href="#concat-function">Concat Function</a></h3>
-<blockquote>
-<p>fun concat</p>
-</blockquote>
-<p><img src="img/FirstProof_Concat.png" alt="Could not load image." /></p>
 <h2 id="execute"><a class="header" href="#execute">Execute</a></h2>
 <p>The input file is now ready and we can execute CryptoVerif to let it try proof our query.<br />
 You can find the input file <em>enc-then-MAC-IND-CPA.ocv</em>

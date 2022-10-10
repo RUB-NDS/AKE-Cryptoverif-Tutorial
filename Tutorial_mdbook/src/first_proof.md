@@ -51,7 +51,7 @@ You can see the code snippets for telling CryptoVerif that _enc_ is IND-CPA secu
 
 Here the already in the library defined macros _IND\_CPA\_sym\_enc_ and _SUF\_CMA\_det\_mac_ are expanded. For a better understanding we will discuss the technical side with the example of the _IND\_CPA\_sym\_enc_ marco.
 
-First, let us inspect the meaning of the parameters of this macro.
+First, let us inspect the meaning of the arguments of this macro.
 
 1. type of keys
 2. type of plaintexts
@@ -67,32 +67,65 @@ The functions _enc_, _dec_, _injbot_ and _Z_ are declared by the macro. It is im
 The types of keys, plaintexts, ciphertexts and the probability _Penc_ must be declared before expanding the macro.  
 As you can see in the code snippet, the probability _Penc_ is declared right before expanding the macro.  
 The types of plaintexts and ciphertexts are _bitstring_, a predefined type.  
-The type of keys is declared at the top of the input file, depicted in the following code snippet. There are also the type declarations for parameters for the macro _SUF\_CMA\_det\_mac_.
+The type of keys is declared at the top of the input file, depicted in the following code snippet. There are also the type declarations for arguments for the macro _SUF\_CMA\_det\_mac_.
 
 ![Could not load image.](img/FirstProof_Types.png)
 
 The types are annotated with the lable **[fixed]** meaning that, for example, an encryption key is a bitstring of fixed length. Note that CryptoVerif does not need to know the specific length. Similar as it does not need to know the specific implementation of the symmetric encryption scheme or the MAC.
 
-> explain technical side: e.g. IND-CPA replaces message with Z(m1),Z(m2) (same bitstring)  
-> explain how CryptoVerif tries to transformations (how it reacts to fails to proceed)
+> explain technical side: e.g. IND-CPA replaces plaintexts with Z(m1),Z(m2) (same bitstring)  
+> explain how CryptoVerif tries transformations (how it reacts to fails to proceed)
 
 ### Definition Enc-then-Mac
+<!---Correct description of letfun and fun?--->
 > letfun full_enc()  
 > letfun requires implementation vs fun does not
 
+Further, we need to define how Enc-then-Mac works. Otherwise CryptoVerif would not know what the construction we try to prove looks like. 
+
+For the definition of the Enc-then-Mac construction we will need a function for concatenation. We will start with this function.  
+There are different types of functions in CryptoVerif. In this code snippet we can see **letfun**. Another type of functions is **fun**. The difference between them is that **letfun** requires to contain a concrete implementation of the function, whereas **fun** only defines the input- and output-types.  
+
+The definition of the concatenation function is shown in the following.
+
+![Could not load image.](img/FirstProof_Concat.png)
+
+> talk about fun, types and [data]
+
+
+Now that we talked about the concatenation function, we have everything we need to move on to the Enc-then-Mac construction. The definition of the Enc-then-Mac encryption is depicted in the following.
 
 ![Could not load image.](img/FirstProof_EncThenMac.png)
+ 
+As we want to define the exact behaviour for the Enc-then-Mac encryption we use **letfun** for the function _full\_enc_.  
+
+> TODO: talk about oracles ()= and where to put ";" and "."
+
+The function has three arguments that are needed.  
+First, there is the plaintext _m_ of type _bitstring_. In CryptoVerif we usually consider plain- and ciphertexts as bitstrings. This means we consider cryptographic primitives (e.g. encryption) as mappings from bitstrings to bitstrings.  
+Further there are the encryption key _k_ of type _key_, and the MAC key _mk_ of type _mkey_.
+
+We will use the encryption function _enc_ declared inside of the macro _IND\_CPA\_sym\_enc_ to compute the encryption of the plaintext _m_ under the encryption key _k_. This ciphertext is then stored inside the variable _c1_.  
+Next, we concatenate the ciphertext _c1_ with the MAC of the ciphertext _c1_ under the MAC key _mk_. This concatenation is the result of our Enc-then-Mac encryption function _full\_enc_.
+
 
 ### Initial game to prove (including oracles)
-> QencLR (oracle)  
-> talk about replication (foreach i <= qEnc do)  
-> param qEnc. definded at top of file  
-> if branches cannot be merged  
+Now we want to define the initial game CryptoVerif should try to proof using the sequence of games. In our example this is the IND-CPA game. Note that for many games there are oracles the adversary can query. Here, an encryption oracle from the IND-CPA game is required. We will start with this oracle before proceeding with the initial game.  
 
+> QencLR (oracle)  difference = and :=
 
+The code of the encryption oracle is depicted below.
 
 ![Could not load image.](img/FirstProof_EncOracle.png)
 
+> talk about keyword **let** and oracles  
+> talk about equivalency of IND-CPA and LoR-CPA
+
+The oracle is implemented as a left-or-right oracle. That means that the oracle receives two plaintexts in each query made by the adversary and always encrypts the left plaintext or always encrypts the right plaintext depending on the value of _b_.
+
+> talk about replication (foreach i <= qEnc do)  
+> param qEnc. definded at top of file  
+> if branches cannot be merged  
 
 ![Could not load image.](img/FirstProof_Params.png)
 
@@ -104,11 +137,6 @@ The types are annotated with the lable **[fixed]** meaning that, for example, an
 ![Could not load image.](img/FirstProof_Queries.png)
 
 ![Could not load image.](img/FirstProof_InitalGame.png)
-
-### Concat Function
-> fun concat
-
-![Could not load image.](img/FirstProof_Concat.png)
 
 
 ## Execute

@@ -8,39 +8,38 @@ type mkey [fixed].
 type key [fixed].
 type macs [fixed].
 
-(* Shared-key encryption (CPA Stream cipher) *)
-
+(* Enc is IND-CPA *)
 proba Penc.
-
 expand IND_CPA_sym_enc(key, bitstring, bitstring, enc, dec, injbot, Z, Penc).
 
-(* Mac *)
-
+(* Mac is SUF-CMA *)
 proba Pmac.
-
 expand SUF_CMA_det_mac(mkey, bitstring, macs, mac, verify, Pmac).
 
 (* Queries *)
-
 query secret b.
 
+(* format of concat *)
 fun concat(bitstring, macs): bitstring [data].
 
+(* definition Enc-then-Mac encryption *)
 letfun full_enc(m: bitstring, k: key, mk: mkey) =
-  c1 <- enc(m,k);
-  concat(c1,mac(c1,mk)).
+  c1 <- enc(m, k);
+  concat(c1, mac(c1,mk)).
 
+(* oracle given to the adversary *)
 let QencLR(b0: bool, k: key, mk: mkey) = 
     	foreach i <= qEnc do
 	Oenc (m1: bitstring, m2: bitstring) :=
 	if Z(m1) = Z(m2) then (* m1 and m2 have the same length *)
 	m0 <- if b0 then m1 else m2;
-	return(full_enc(m0,k,mk)).
+	return(full_enc(m0, k, mk)).
 
+(* Initial game to proof *)
 process 
 	Ostart() :=
 	b <-R bool;
 	k <-R key;
 	mk <-R mkey;
 	return;
-	run QencLR(b, k,mk)
+	run QencLR(b, k, mk)

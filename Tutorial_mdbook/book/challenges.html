@@ -178,45 +178,84 @@ For this task you need to <strong>rewrite the defintion</strong> of <em>full_enc
 </blockquote>
 <details>
   <summary><b>Show solution</b></summary>
+<blockquote>
 <details>
-    <summary><b>Solution: Definition Enc-and-Mac</b></summary>
+   <summary><b>Solution: Definition Enc-and-Mac</b></summary>
 <p><img src="img/Challenge_Fail_EncAndMac.png" alt="Could not load image." /></p>
 </details>
 <details>
-    <summary><b>Explanation: How the proof fails</b></summary>
-<blockquote>
+   <summary><b>Explanation: How the proof fails</b></summary>
 <p>Insert Explanation how proof fails</p>
+</details>
+<details>
+   <summary><b>Solution: Derive attack on Enc-and-Mac</b></summary>
+<p>Use failed CryptoVerif game to derive attack</p>
+</details>
 </blockquote>
 </details>
-</details>
-<blockquote>
-<p>Emphasize that CryptoVerif <strong>cannot</strong> prove insecurity of protocols.
-derive attack on Enc-and-Mac using failed proof</p>
-</blockquote>
 <h2 id="enc-then-mac-ind-cca2"><a class="header" href="#enc-then-mac-ind-cca2">Enc-then-Mac IND-CCA2</a></h2>
 <!--- Links to IND-CPA, IND-CCA2,... --->
 <blockquote>
 <p>Prove Enc-then-Mac is IND-CCA2</p>
 </blockquote>
-<p><a href="https://en.wikipedia.org/wiki/Ciphertext_indistinguishability#Indistinguishability_under_chosen_ciphertext_attack/adaptive_chosen_ciphertext_attack_(IND-CCA1,_IND-CCA2)" target="_blank">IND-CCA2</a></p>
+<p>In the second challenge we will consider the
+<a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-and-MAC_(E&M)" target="_blank">Enc-then-Mac</a>
+construction again. The assumptions on the cryptographic primitives are the same as in the chapter <strong>First Proof</strong>. The symmetric encryption is IND-CPA secure and the MAC is SUF-CMA secure.<br />
+Your goal is to prove that Enc-then-Mac is then
+<a href="https://en.wikipedia.org/wiki/Ciphertext_indistinguishability#Indistinguishability_under_chosen_ciphertext_attack/adaptive_chosen_ciphertext_attack_(IND-CCA1,_IND-CCA2)" target="_blank">IND-CCA2</a>
+secure using CryptoVerif.</p>
+<p>You can orientate yourself on the input file
+<a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/tutorial/enc-then-MAC-IND-CPA.ocv" target="_blank"><em>enc-then-MAC-IND-CPA.ocv</em></a>
+presented in the chapter <strong>First Proof</strong>.</p>
+<!--- Hints IND-CCA2 --->
+<details>
+  <summary><b>❓ Need any hints? Click here.</b></summary>
 <blockquote>
-<p><strong>Hints</strong>:<br />
-1.1 consider the differences between IND-CPA and IND-CCA2<br />
-1.2 told CryptoVerif how Enc-then-Mac is decrypted?<br />
-1.3 added oracle for decryption?<br />
-1.4 remember that if branches cannot be merged<br />
-2.1 Remember to exclude trivial win<br />
-2.2 tables syntax:</p>
-</blockquote>
-<pre><code>table tbl_name(type_to_store).
-insert tbl_name(obj_to_insert);
-get tbl_name(=obj_to_search) in do_true else do_false
-</code></pre>
+<details>
+   <summary><b>💡 Hint 1</b></summary>
+<p>Consider the <strong>differences</strong> between the <strong>IND-CPA</strong> game and the <strong>IND-CCA2</strong> game. What is new?</p>
+</details>
+<details>
+   <summary><b>💡 Hint 2</b></summary>
+<p>The IND-CCA2 game requires a decryption oracle.<br />
+Did you tell CryptoVerif how the <strong>Enc-then-Mac decryption</strong> looks like?</p>
 <blockquote>
-<p>3 run oracles simultaneous:</p>
+<details>
+   <summary><b>Solution: Decryption Enc-then-Mac</b></summary>
+<p><img src="img/Challenge_CCA2_EncThenMac_Decryption.png" alt="Could not load image." /></p>
+</details>
 </blockquote>
-<pre><code>(run Oracle1(a,b) | run Oracle2(c,d,e))
-</code></pre>
+</details>
+<details>
+   <summary><b>💡 Hint 3</b></summary>
+<p>The IND-CCA2 game requires a decryption oracle.<br />
+Did you add the <strong>decryption oracle</strong>? You can orientate yourself on the encryption oracle presented in the chapter <strong>First Proof</strong>.<br />
+Note that you should not implement the decryption oracle as a left-or-right oracle.</p>
+</details>
+<details>
+   <summary><b>💡 Hint 4</b></summary>
+<p>Did you remember to <strong>exclude</strong> how any adversary can <strong>trivially win</strong> the IND-CCA2 game?<br />
+You may use tables in CryptoVerif to do so. Check the syntax of tables below.</p>
+<blockquote>
+<details>
+   <summary><b>CryptoVerif Syntax: Tables</b></summary>
+<p><img src="img/Challenge_CCA2_TablesSyntax.png" alt="Could not load image." /></p>
+</details>
+</blockquote>
+</details>
+<details>
+   <summary><b>💡 Hint 5</b></summary>
+<p>In the IND-CCA2 game the adversary can access the encryption oracle and the decryption oracle simultaneously.<br />
+Check the syntax of running oracles simulateously below.</p>
+<blockquote>
+<details>
+   <summary><b>CryptoVerif Syntax: Run oracles simultaneously</b></summary>
+<p><img src="img/Challenge_CCA2_SimulSyntax.png" alt="Could not load image." /></p>
+</details>
+</blockquote>
+</details>
+</blockquote>
+</details>
 <blockquote>
 <p><strong>Solution</strong>:</p>
 <ol>
@@ -226,14 +265,18 @@ get tbl_name(=obj_to_search) in do_true else do_false
 <li>run oracles simultaneous</li>
 </ol>
 </blockquote>
+<!--- Solution IND-CCA2 --->
 <details>
   <summary><b>Show solution</b></summary>
 <details>
     <summary><b>Solution: Decryption Enc-then-Mac</b></summary>
+<blockquote>
+<p>Explain solution</p>
+</blockquote>
 <p><img src="img/Challenge_CCA2_EncThenMac_Decryption.png" alt="Could not load image." /></p>
 </details>
 <details>
-    <summary><b>Solution: Enc and Dec oracle (excluding trivial win)</b></summary>
+    <summary><b>Solution: Enc and Dec oracle (exclude trivial win)</b></summary>
 <p><img src="img/Challenge_CCA2_Oracles.png" alt="Could not load image." /></p>
 <p><img src="img/Challenge_CCA2_Params.png" alt="Could not load image." /></p>
 </details>

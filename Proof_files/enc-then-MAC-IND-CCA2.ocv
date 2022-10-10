@@ -57,7 +57,7 @@ let QencLR(b0: bool, k: key, mk: mkey) =
 	return(c0).
 	
 (* Dec-Oracle *)
-let Qdec(b0: bool, k: key, mk: mkey) =
+let Qdec(k: key, mk: mkey) =
 	foreach idec <= qDec do
 	Odec (c: bitstring) :=
   (* check if ciphertexts has been outputed by Enc oracle *)
