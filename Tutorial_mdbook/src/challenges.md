@@ -46,7 +46,9 @@ You can see a visualization of this construction on the right-hand side.
 >  <details>
 >    <summary><b>Explanation: How the proof fails</b></summary>
 >    
-> Insert Explanation how proof fails
+> Insert Explanation how proof fails (Merge not possible because mac(m1,...) and mac(m2,...) instead of same value)
+>
+> ![Could not load image.](img/Challenger_Fail_G7Results.png)
 >  </details>
 >
 >  <details>
@@ -160,4 +162,13 @@ presented in the chapter **First Proof**.
     
   ![Could not load image.](img/Challenge_CCA2_InitialGame.png)
   </details>
+</details>
+
+
+> Result ala Convince Yourself (Look at Last Game and understand why independent from b)
+
+<details>
+  <summary>Show last game</summary>
+
+![Could not load image.](img/Challenge_CCA2_G14.png)
 </details>

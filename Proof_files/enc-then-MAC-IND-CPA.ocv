@@ -29,7 +29,7 @@ letfun full_enc(m: bitstring, k: key, mk: mkey) =
 
 (* oracle given to the adversary *)
 let QencLR(b0: bool, k: key, mk: mkey) = 
-    	foreach i <= qEnc do
+  foreach i <= qEnc do
 	Oenc (m1: bitstring, m2: bitstring) :=
 	if Z(m1) = Z(m2) then (* m1 and m2 have the same length *)
 	m0 <- if b0 then m1 else m2;

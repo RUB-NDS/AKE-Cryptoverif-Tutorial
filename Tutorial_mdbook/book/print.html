@@ -144,11 +144,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="-motivation"><a class="header" href="#-motivation">❓ Motivation</a></h1>
+<!--- Links to official website, Introduction paper(2017), Tutorial, (Git),... --->
 <h2 id="what-is-cryptoverif"><a class="header" href="#what-is-cryptoverif">What is CryptoVerif?</a></h2>
 <blockquote>
 <p>formalizes sequence of games (game hopping)<br />
 computes bound on advantage<br />
-probabilistic process calculus language<br />
+probabilistic process calculus language (inspired by pi calculus)
 interactive mode</p>
 </blockquote>
 <h2 id="why-you-should-learn-about-it"><a class="header" href="#why-you-should-learn-about-it">Why you should learn about it</a></h2>
@@ -251,7 +252,10 @@ secure.</p>
 , Chapter 6). But you can also create your own assumptions.</p>
 <p>You can see the code snippets for telling CryptoVerif that <em>enc</em> is IND-CPA secure and <em>mac</em> is SUF-CMA secure in the following.
 <img src="img/FirstProof_Assumptions.png" alt="Could not load image." /></p>
-<p>Here the already in the library defined macros <em>IND_CPA_sym_enc</em> and <em>SUF_CMA_det_mac</em> are expanded. For a better understanding we will discuss the technical side with the example of the <em>IND_CPA_sym_enc</em> marco.</p>
+<blockquote>
+<p>talk about where to put &quot;.&quot; </p>
+</blockquote>
+<p>Here the already in the default library <em>default.ocvl</em> defined macros <em>IND_CPA_sym_enc</em> and <em>SUF_CMA_det_mac</em> are expanded. For a better understanding we will discuss the technical side with the example of the <em>IND_CPA_sym_enc</em> marco.</p>
 <p>First, let us inspect the meaning of the arguments of this macro.</p>
 <ol>
 <li>type of keys</li>
@@ -271,8 +275,16 @@ The type of keys is declared at the top of the input file, depicted in the follo
 <p><img src="img/FirstProof_Types.png" alt="Could not load image." /></p>
 <p>The types are annotated with the lable <strong>[fixed]</strong> meaning that, for example, an encryption key is a bitstring of fixed length. Note that CryptoVerif does not need to know the specific length. Similar as it does not need to know the specific implementation of the symmetric encryption scheme or the MAC.</p>
 <blockquote>
-<p>explain technical side: e.g. IND-CPA replaces plaintexts with Z(m1),Z(m2) (same bitstring)<br />
-explain how CryptoVerif tries transformations (how it reacts to fails to proceed)</p>
+<p>explain technical side: e.g. IND-CPA replaces plaintexts with Z(m1),Z(m2) (same bitstring)</p>
+</blockquote>
+<p>Now we want to gain a better understanding of how CryptoVerif is doing game transformations. Once again, we will take the IND-CPA assumption as an example.<br />
+Let´s have a look at a code snippet from the macro <em>IND_CPA_sym_enc</em> in the default library <em>default.ocvl</em> depicted below.</p>
+<p><img src="img/FirstProof_Equivalence.png" alt="Could not load image." /></p>
+<blockquote>
+<p>talk about IND-CPA transformation shown above</p>
+</blockquote>
+<blockquote>
+<p>explain how CryptoVerif tries transformations (how it reacts to fails to proceed)</p>
 </blockquote>
 <h3 id="definition-enc-then-mac"><a class="header" href="#definition-enc-then-mac">Definition Enc-then-Mac</a></h3>
 <!---Correct description of letfun and fun?--->
@@ -292,7 +304,8 @@ There are different types of functions in CryptoVerif. In this code snippet we c
 <p><img src="img/FirstProof_EncThenMac.png" alt="Could not load image." /></p>
 <p>As we want to define the exact behaviour for the Enc-then-Mac encryption we use <strong>letfun</strong> for the function <em>full_enc</em>.</p>
 <blockquote>
-<p>TODO: talk about oracles ()= and where to put &quot;;&quot; and &quot;.&quot;</p>
+<p>TODO: talk about oracles ()= and where to put &quot;;&quot; and &quot;.&quot;<br />
+sequential execution with &quot;;&quot;</p>
 </blockquote>
 <p>The function has three arguments that are needed.<br />
 First, there is the plaintext <em>m</em> of type <em>bitstring</em>. In CryptoVerif we usually consider plain- and ciphertexts as bitstrings. This means we consider cryptographic primitives (e.g. encryption) as mappings from bitstrings to bitstrings.<br />
@@ -313,7 +326,7 @@ talk about equivalency of IND-CPA and LoR-CPA</p>
 <p>The oracle is implemented as a left-or-right oracle. That means that the oracle receives two plaintexts in each query made by the adversary and always encrypts the left plaintext or always encrypts the right plaintext depending on the value of <em>b</em>.</p>
 <blockquote>
 <p>talk about replication (foreach i &lt;= qEnc do)<br />
-param qEnc. definded at top of file<br />
+param qEnc. definded at top of file  (no real number)
 if branches cannot be merged</p>
 </blockquote>
 <p><img src="img/FirstProof_Params.png" alt="Could not load image." /></p>
@@ -334,9 +347,35 @@ You can find the input file <em>enc-then-MAC-IND-CPA.ocv</em>
 <pre><code>./cryptoverif ./path/enc-then-MAC-IND-CPA.ocv
 </code></pre>
 <blockquote>
-<p>explain output of CryptoVerif<br />
-emphasize IND-CPA game hop as preparation for the first challenge</p>
+<p>explain output of CryptoVerif</p>
 </blockquote>
+<blockquote>
+<p>show IND-CPA game hop. replacement of x with Z(x) as explained before</p>
+</blockquote>
+<details>
+  <summary>Show IND-CPA game hop</summary>
+<p><img src="img/FirstProof_G4_5.png" alt="Could not load image." /></p>
+</details>
+<blockquote>
+<p>emphasize last game hop as preparation for the first challenge<br />
+show Merging game hop</p>
+</blockquote>
+<details>
+  <summary>Show Merging game hop</summary>
+<p><img src="img/FirstProof_G7_8.png" alt="Could not load image." /></p>
+</details>
+<blockquote>
+<p>add TeX output with -tex</p>
+</blockquote>
+<!--- fix path -->
+<pre><code>mkdir tex
+./cryptoverif -tex ./tex/enc-then-MAC-IND-CPA ./path/enc-then-MAC-IND-CPA.ocv
+</code></pre>
+<p>You can view the PDF with a TeX editor of your choice (e.g. 
+<a href="https://www.texstudio.org/" target="_blank">TeXstudio</a>).<br />
+Alternatively, you can simply use an 
+<a href="https://www.tutorialspoint.com/online_latex_editor.php" target="_blank">Online LaTeX Editor</a>
+to display the PDF without any installation required.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-challenges"><a class="header" href="#-challenges">💡 Challenges</a></h1>
 <h2 id="enc-and-mac"><a class="header" href="#enc-and-mac">Enc-and-Mac</a></h2>
 <blockquote>
@@ -380,7 +419,8 @@ For this task you need to <strong>rewrite the defintion</strong> of <em>full_enc
 </details>
 <details>
    <summary><b>Explanation: How the proof fails</b></summary>
-<p>Insert Explanation how proof fails</p>
+<p>Insert Explanation how proof fails (Merge not possible because mac(m1,...) and mac(m2,...) instead of same value)</p>
+<p><img src="img/Challenger_Fail_G7Results.png" alt="Could not load image." /></p>
 </details>
 <details>
    <summary><b>Solution: Derive attack on Enc-and-Mac</b></summary>
@@ -480,7 +520,13 @@ Check the syntax of running oracles simulateously below.</p>
 <p><img src="img/Challenge_CCA2_InitialGame.png" alt="Could not load image." /></p>
 </details>
 </details>
-
+<blockquote>
+<p>Result ala Convince Yourself (Look at Last Game and understand why independent from b)</p>
+</blockquote>
+<details>
+  <summary>Show last game</summary>
+<p><img src="img/Challenge_CCA2_G14.png" alt="Could not load image." /></p>
+</details>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

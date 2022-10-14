@@ -49,7 +49,9 @@ CryptoVerif provides a library containing many standard cryptographic assumption
 You can see the code snippets for telling CryptoVerif that _enc_ is IND-CPA secure and _mac_ is SUF-CMA secure in the following.
 ![Could not load image.](img/FirstProof_Assumptions.png)
 
-Here the already in the library defined macros _IND\_CPA\_sym\_enc_ and _SUF\_CMA\_det\_mac_ are expanded. For a better understanding we will discuss the technical side with the example of the _IND\_CPA\_sym\_enc_ marco.
+> talk about where to put "." 
+
+Here the already in the default library _default.ocvl_ defined macros _IND\_CPA\_sym\_enc_ and _SUF\_CMA\_det\_mac_ are expanded. For a better understanding we will discuss the technical side with the example of the _IND\_CPA\_sym\_enc_ marco.
 
 First, let us inspect the meaning of the arguments of this macro.
 
@@ -74,6 +76,15 @@ The type of keys is declared at the top of the input file, depicted in the follo
 The types are annotated with the lable **[fixed]** meaning that, for example, an encryption key is a bitstring of fixed length. Note that CryptoVerif does not need to know the specific length. Similar as it does not need to know the specific implementation of the symmetric encryption scheme or the MAC.
 
 > explain technical side: e.g. IND-CPA replaces plaintexts with Z(m1),Z(m2) (same bitstring)  
+
+Now we want to gain a better understanding of how CryptoVerif is doing game transformations. Once again, we will take the IND-CPA assumption as an example.  
+Let´s have a look at a code snippet from the macro _IND\_CPA\_sym\_enc_ in the default library _default.ocvl_ depicted below.
+
+![Could not load image.](img/FirstProof_Equivalence.png)
+
+> talk about IND-CPA transformation shown above
+
+
 > explain how CryptoVerif tries transformations (how it reacts to fails to proceed)
 
 ### Definition Enc-then-Mac
@@ -99,7 +110,8 @@ Now that we talked about the concatenation function, we have everything we need 
  
 As we want to define the exact behaviour for the Enc-then-Mac encryption we use **letfun** for the function _full\_enc_.  
 
-> TODO: talk about oracles ()= and where to put ";" and "."
+> TODO: talk about oracles ()= and where to put ";" and "."  
+> sequential execution with ";"
 
 The function has three arguments that are needed.  
 First, there is the plaintext _m_ of type _bitstring_. In CryptoVerif we usually consider plain- and ciphertexts as bitstrings. This means we consider cryptographic primitives (e.g. encryption) as mappings from bitstrings to bitstrings.  
@@ -124,7 +136,7 @@ The code of the encryption oracle is depicted below.
 The oracle is implemented as a left-or-right oracle. That means that the oracle receives two plaintexts in each query made by the adversary and always encrypts the left plaintext or always encrypts the right plaintext depending on the value of _b_.
 
 > talk about replication (foreach i <= qEnc do)  
-> param qEnc. definded at top of file  
+> param qEnc. definded at top of file  (no real number)
 > if branches cannot be merged  
 
 ![Could not load image.](img/FirstProof_Params.png)
@@ -153,4 +165,36 @@ When in the same directory as the executable _cryptoverif_ you can run CryptoVer
 ```
 
 > explain output of CryptoVerif  
-> emphasize IND-CPA game hop as preparation for the first challenge
+
+> show IND-CPA game hop. replacement of x with Z(x) as explained before
+
+<details>
+  <summary>Show IND-CPA game hop</summary>
+
+![Could not load image.](img/FirstProof_G4_5.png)
+</details>
+
+
+> emphasize last game hop as preparation for the first challenge  
+> show Merging game hop
+
+<details>
+  <summary>Show Merging game hop</summary>
+
+![Could not load image.](img/FirstProof_G7_8.png)
+</details>
+
+
+
+> add TeX output with -tex
+<!--- fix path -->
+```
+mkdir tex
+./cryptoverif -tex ./tex/enc-then-MAC-IND-CPA ./path/enc-then-MAC-IND-CPA.ocv
+```
+
+You can view the PDF with a TeX editor of your choice (e.g. 
+<a href="https://www.texstudio.org/" target="_blank">TeXstudio</a>).  
+Alternatively, you can simply use an 
+<a href="https://www.tutorialspoint.com/online_latex_editor.php" target="_blank">Online LaTeX Editor</a>
+to display the PDF without any installation required.

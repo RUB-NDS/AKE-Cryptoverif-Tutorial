@@ -48,7 +48,7 @@ table ciphertexts(bitstring).
 
 (* Enc LR-Oracle *)
 let QencLR(b0: bool, k: key, mk: mkey) = 
-    	foreach ienc <= qEnc do
+  foreach ienc <= qEnc do
 	Oenc (m1: bitstring, m2: bitstring) :=
 	if Z(m1) = Z(m2) then (* m1 and m2 have the same length *)
 	m0 <- if b0 then m1 else m2;
