@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="motivation.html"><strong aria-hidden="true">1.</strong> ❓ Motivation</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> 🔧 Installation</a></li><li class="chapter-item expanded "><a href="first_proof.html"><strong aria-hidden="true">3.</strong> 📚 First Proof</a></li><li class="chapter-item expanded "><a href="challenges.html"><strong aria-hidden="true">4.</strong> 💡 Challenges</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="motivation.html"><strong aria-hidden="true">1.</strong> ❓ Motivation</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> 🔧 Installation</a></li><li class="chapter-item expanded "><a href="first_proof.html"><strong aria-hidden="true">3.</strong> 📚 First Proof</a></li><li class="chapter-item expanded "><a href="challenges.html"><strong aria-hidden="true">4.</strong> 💡 Challenges</a></li><li class="chapter-item expanded "><a href="selfstudy.html"><strong aria-hidden="true">5.</strong> 📝 Self-Study</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,13 +148,20 @@
 <h2 id="what-is-cryptoverif"><a class="header" href="#what-is-cryptoverif">What is CryptoVerif?</a></h2>
 <blockquote>
 <p>formalizes sequence of games (game hopping)<br />
-computes bound on advantage<br />
-probabilistic process calculus language (inspired by pi calculus)
+computes bound on advantage (exact security)<br />
+computational model<br />
+specialized probabilistic process calculus language (inspired by pi calculus https://en.wikipedia.org/wiki/%CE%A0-calculus)<br />
 interactive mode</p>
 </blockquote>
+<p><a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/" target="_blank">CryptoVerif</a>
+is a tool for proving cryptographic protocols automatically in the computational model. It formalizes the
+<a href="https://shoup.net/papers/games.pdf" target="_blank">sequence of games</a>
+proving technique (often also called game hopping). CryptoVerif computes a bound on the advantage of an adversary. It is written in a specialized probabilistic process calculus language inspired by
+<a href="https://en.wikipedia.org/wiki/%CE%A0-calculus" target="_blank">pi-calculus</a>.<br />
+CryptoVerif has an automatic mode, as well as an interactive mode.</p>
 <h2 id="why-you-should-learn-about-it"><a class="header" href="#why-you-should-learn-about-it">Why you should learn about it</a></h2>
 <blockquote>
-<p>confirm your manual proofs<br />
+<p>CryptoVerif can prove secrecy, authentication, and indistinguishability properties.
 CryptoVerif cannot find attacks BUT failed proof may help you to find such an attack (on a protocol you considered and &quot;proofed&quot; to be secure)</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-installation"><a class="header" href="#-installation">🔧 Installation</a></h1>
@@ -215,12 +222,6 @@ eval $(opam env)
 <p>ℹ️ Having problems with the installation? Take a look at the <em>README</em> file in the downloaded CryptoVerif folder.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-first-proof"><a class="header" href="#-first-proof">📚 First Proof</a></h1>
-<!---
-TODO:
-how parameters of oracles are defined
-difference Oracle and Process
-fun vs letfun
---->
 <p>In this chapter we will have a look at a first proof using CryptoVerif. You will be guided to gather an understanding of how to work with CryptoVerif.</p>
 <p>We will consider the 
 <a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-then-MAC_(EtM)" target="_blank">Enc-then-Mac</a>
@@ -247,24 +248,23 @@ secure.</p>
 </blockquote>
 <h3 id="cryptographic-assumptions"><a class="header" href="#cryptographic-assumptions">Cryptographic assumptions</a></h3>
 <p>We start with the cryptographic assumptions we make for the cryptographic primitives used. In our case this is that the symmetric encryption is IND-CPA secure and the MAC is SUF-CMA secure.</p>
-<p>CryptoVerif provides a library containing many standard cryptographic assumptions you can use (see
-<a href="https://github.com/cn-lk666/CryptoVerif/blob/main/manual.pdf" target="_blank">manual</a>
-, Chapter 6). But you can also create your own assumptions.</p>
+<p>CryptoVerif provides a library containing many standard cryptographic assumptions you can use (see <em>docs/manual.pdf</em>, Chapter 6). But you can also create your own assumptions.</p>
 <p>You can see the code snippets for telling CryptoVerif that <em>enc</em> is IND-CPA secure and <em>mac</em> is SUF-CMA secure in the following.
 <img src="img/FirstProof_Assumptions.png" alt="Could not load image." /></p>
 <blockquote>
 <p>talk about where to put &quot;.&quot; </p>
 </blockquote>
+<!--- check if defined is correct word for these macros --->
 <p>Here the already in the default library <em>default.ocvl</em> defined macros <em>IND_CPA_sym_enc</em> and <em>SUF_CMA_det_mac</em> are expanded. For a better understanding we will discuss the technical side with the example of the <em>IND_CPA_sym_enc</em> marco.</p>
-<p>First, let us inspect the meaning of the arguments of this macro.</p>
+<p>First, let us inspect the meaning of the parameters of this macro.</p>
 <ol>
 <li>type of keys</li>
 <li>type of plaintexts</li>
 <li>type of ciphertexts</li>
 <li>encryption function</li>
 <li>decryption function</li>
-<li>function to inject bottom symbol (decryption function needs to return bottom when decryption fails; bottom is not the same type as ciphertexts)</li>
-<li>function that returns for each bitstring a bitstring of the same length consisting only of zeroes</li>
+<li>function to inject the type bitstring to the type bitstringbot (The decryption returns either a bitstring (plaintext) or bottom (when the decryption fails). The type bitstringbot contains all bitstrings and bottom and is the return type of the decryption function.)</li>
+<li>function from bitstring to bitstring (This function models the leakage of the encryption. We usually interpret this as the leakage of the length of the plaintext.)</li>
 <li>probability of breaking the IND-CPA property</li>
 </ol>
 <p>The functions <em>enc</em>, <em>dec</em>, <em>injbot</em> and <em>Z</em> are declared by the macro. It is important that they are not declared anywhere else. They can only be used after the macro has been expanded.</p>
@@ -273,18 +273,18 @@ As you can see in the code snippet, the probability <em>Penc</em> is declared ri
 The types of plaintexts and ciphertexts are <em>bitstring</em>, a predefined type.<br />
 The type of keys is declared at the top of the input file, depicted in the following code snippet. There are also the type declarations for arguments for the macro <em>SUF_CMA_det_mac</em>.</p>
 <p><img src="img/FirstProof_Types.png" alt="Could not load image." /></p>
-<p>The types are annotated with the lable <strong>[fixed]</strong> meaning that, for example, an encryption key is a bitstring of fixed length. Note that CryptoVerif does not need to know the specific length. Similar as it does not need to know the specific implementation of the symmetric encryption scheme or the MAC.</p>
+<p>The types are annotated with the lable <strong>[fixed]</strong> meaning that, for example, an encryption key is a bitstring of fixed length. Note that CryptoVerif does not need to know the specific length. Similar as it does not need to know the specific implementation of the symmetric encryption scheme or the MAC.<br />
+Note that it is possible to make an exact specification of the length to CryptoVerif.</p>
 <blockquote>
-<p>explain technical side: e.g. IND-CPA replaces plaintexts with Z(m1),Z(m2) (same bitstring)</p>
+<p>explain technical side: e.g. IND-CPA replaces plaintexts with Z(m1),Z(m2) (same bitstring)<br />
+talk again that Z models leakage of encryption and we interpret is as the leakage of the length of the plaintext</p>
 </blockquote>
 <p>Now we want to gain a better understanding of how CryptoVerif is doing game transformations. Once again, we will take the IND-CPA assumption as an example.<br />
 Let´s have a look at a code snippet from the macro <em>IND_CPA_sym_enc</em> in the default library <em>default.ocvl</em> depicted below.</p>
 <p><img src="img/FirstProof_Equivalence.png" alt="Could not load image." /></p>
 <blockquote>
-<p>talk about IND-CPA transformation shown above</p>
-</blockquote>
-<blockquote>
-<p>explain how CryptoVerif tries transformations (how it reacts to fails to proceed)</p>
+<p>talk about IND-CPA transformation shown above
+explain how CryptoVerif does cryptographic transformations (requirements that need to be satisfied)</p>
 </blockquote>
 <h3 id="definition-enc-then-mac"><a class="header" href="#definition-enc-then-mac">Definition Enc-then-Mac</a></h3>
 <!---Correct description of letfun and fun?--->
@@ -292,30 +292,32 @@ Let´s have a look at a code snippet from the macro <em>IND_CPA_sym_enc</em> in 
 <p>letfun full_enc()<br />
 letfun requires implementation vs fun does not</p>
 </blockquote>
-<p>Further, we need to define how Enc-then-Mac works. Otherwise CryptoVerif would not know what the construction we try to prove looks like. </p>
-<p>For the definition of the Enc-then-Mac construction we will need a function for concatenation. We will start with this function.<br />
-There are different types of functions in CryptoVerif. In this code snippet we can see <strong>letfun</strong>. Another type of functions is <strong>fun</strong>. The difference between them is that <strong>letfun</strong> requires to contain a concrete implementation of the function, whereas <strong>fun</strong> only defines the input- and output-types.</p>
-<p>The definition of the concatenation function is shown in the following.</p>
+<p>Further, we need to define how Enc-then-Mac works. Otherwise CryptoVerif would not know what the construction we try to prove looks like.</p>
+<p>For the definition of the Enc-then-Mac construction we will need a function for concatenation. We are not interested in the concrete implementation of this function.<br />
+Therefore, we only declare the function using the keyword <strong>fun</strong>.<br />
+The keyword <strong>letfun</strong> is used when defining a function, i.e., giving a concrete implementation. We will use this one for the definition of the Enc-then-Mac encryption.</p>
+<p>The declaration of the concatenation function is shown in the following.</p>
 <p><img src="img/FirstProof_Concat.png" alt="Could not load image." /></p>
 <blockquote>
 <p>talk about fun, types and [data]</p>
 </blockquote>
 <p>Now that we talked about the concatenation function, we have everything we need to move on to the Enc-then-Mac construction. The definition of the Enc-then-Mac encryption is depicted in the following.</p>
 <p><img src="img/FirstProof_EncThenMac.png" alt="Could not load image." /></p>
-<p>As we want to define the exact behaviour for the Enc-then-Mac encryption we use <strong>letfun</strong> for the function <em>full_enc</em>.</p>
+<p>As we want to define the exact behaviour for the Enc-then-Mac encryption we use <strong>letfun</strong> for the definition of the function <em>full_enc</em>.</p>
 <blockquote>
 <p>TODO: talk about oracles ()= and where to put &quot;;&quot; and &quot;.&quot;<br />
 sequential execution with &quot;;&quot;</p>
 </blockquote>
-<p>The function has three arguments that are needed.<br />
-First, there is the plaintext <em>m</em> of type <em>bitstring</em>. In CryptoVerif we usually consider plain- and ciphertexts as bitstrings. This means we consider cryptographic primitives (e.g. encryption) as mappings from bitstrings to bitstrings.<br />
+<p>The function has three parameters that are needed.<br />
+First, there is the plaintext <em>m</em> of type <em>bitstring</em>. In CryptoVerif we consider plain- and ciphertexts as bitstrings. This means we consider cryptographic primitives (e.g. encryption) as mappings from bitstrings to bitstrings.<br />
 Further there are the encryption key <em>k</em> of type <em>key</em>, and the MAC key <em>mk</em> of type <em>mkey</em>.</p>
 <p>We will use the encryption function <em>enc</em> declared inside of the macro <em>IND_CPA_sym_enc</em> to compute the encryption of the plaintext <em>m</em> under the encryption key <em>k</em>. This ciphertext is then stored inside the variable <em>c1</em>.<br />
 Next, we concatenate the ciphertext <em>c1</em> with the MAC of the ciphertext <em>c1</em> under the MAC key <em>mk</em>. This concatenation is the result of our Enc-then-Mac encryption function <em>full_enc</em>.</p>
 <h3 id="initial-game-to-prove-including-oracles"><a class="header" href="#initial-game-to-prove-including-oracles">Initial game to prove (including oracles)</a></h3>
-<p>Now we want to define the initial game CryptoVerif should try to proof using the sequence of games. In our example this is the IND-CPA game. Note that for many games there are oracles the adversary can query. Here, an encryption oracle from the IND-CPA game is required. We will start with this oracle before proceeding with the initial game.</p>
+<p>Now we want to construct the initial game CryptoVerif should try to proof using the sequence of games. In our example this is the IND-CPA game. Note that for many games there are oracles the adversary can query. Here, an encryption oracle from the IND-CPA game is required. We will start with this oracle before proceeding with the initial game.</p>
 <blockquote>
-<p>QencLR (oracle)  difference = and :=</p>
+<p>QencLR (oracle)  difference = and :=
+adversary makes calls to the oracle(s) (interaction)</p>
 </blockquote>
 <p>The code of the encryption oracle is depicted below.</p>
 <p><img src="img/FirstProof_EncOracle.png" alt="Could not load image." /></p>
@@ -326,14 +328,16 @@ talk about equivalency of IND-CPA and LoR-CPA</p>
 <p>The oracle is implemented as a left-or-right oracle. That means that the oracle receives two plaintexts in each query made by the adversary and always encrypts the left plaintext or always encrypts the right plaintext depending on the value of <em>b</em>.</p>
 <blockquote>
 <p>talk about replication (foreach i &lt;= qEnc do)<br />
-param qEnc. definded at top of file  (no real number)
+param qEnc. at top of file  (no real number) (just put into adversary advantage)
 if branches cannot be merged</p>
 </blockquote>
 <p><img src="img/FirstProof_Params.png" alt="Could not load image." /></p>
 <blockquote>
 <p>OStart (first game)<br />
 talk about queries (query secret b.)<br />
-talk about run</p>
+talk about run<br />
+no &quot;.&quot; because end of file
+talk about main process and sub processes</p>
 </blockquote>
 <p><img src="img/FirstProof_Queries.png" alt="Could not load image." /></p>
 <p><img src="img/FirstProof_InitalGame.png" alt="Could not load image." /></p>
@@ -364,6 +368,9 @@ show Merging game hop</p>
   <summary>Show Merging game hop</summary>
 <p><img src="img/FirstProof_G7_8.png" alt="Could not load image." /></p>
 </details>
+<blockquote>
+<p>explain advantage (put together through games e.g. Penc from ind_cpa hop)</p>
+</blockquote>
 <blockquote>
 <p>add TeX output with -tex</p>
 </blockquote>
@@ -403,13 +410,6 @@ Note that CryptoVerif <strong>cannot find attacks</strong>. However, you should 
 For this task you need to <strong>rewrite the defintion</strong> of <em>full_enc</em> to match Enc-and-Mac instead of Enc-then-Mac.</p>
 </blockquote>
 </details>
-<blockquote>
-<p><strong>Solution</strong>:</p>
-<ol>
-<li>rewritten definition of Enc-and-Mac (should be super easy that students understand themselves)</li>
-<li>explanation what the problem is (cannot merge branches in Game 7)</li>
-</ol>
-</blockquote>
 <details>
   <summary><b>Show solution</b></summary>
 <blockquote>
@@ -420,7 +420,7 @@ For this task you need to <strong>rewrite the defintion</strong> of <em>full_enc
 <details>
    <summary><b>Explanation: How the proof fails</b></summary>
 <p>Insert Explanation how proof fails (Merge not possible because mac(m1,...) and mac(m2,...) instead of same value)</p>
-<p><img src="img/Challenger_Fail_G7Results.png" alt="Could not load image." /></p>
+<p><img src="img/Challenge_Fail_G7Results.png" alt="Could not load image." /></p>
 </details>
 <details>
    <summary><b>Solution: Derive attack on Enc-and-Mac</b></summary>
@@ -441,7 +441,7 @@ Your goal is to prove that Enc-then-Mac is then
 secure using CryptoVerif.</p>
 <p>You can orientate yourself on the input file
 <a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/tutorial/enc-then-MAC-IND-CPA.ocv" target="_blank"><em>enc-then-MAC-IND-CPA.ocv</em></a>
-presented in the chapter <strong>First Proof</strong>.</p>
+presented in the chapter <strong>First Proof</strong>. You may require to have a look at hints 4 and 5 as they contain CryptoVerif syntax not captured by this tutorial beforehand.</p>
 <!--- Hints IND-CCA2 --->
 <details>
   <summary><b>❓ Need any hints? Click here.</b></summary>
@@ -480,12 +480,12 @@ You may use tables in CryptoVerif to do so. Check the syntax of tables below.</p
 </details>
 <details>
    <summary><b>💡 Hint 5</b></summary>
-<p>In the IND-CCA2 game the adversary can access the encryption oracle and the decryption oracle simultaneously.<br />
-Check the syntax of running oracles simulateously below.</p>
+<p>In the IND-CCA2 game the adversary can access the encryption oracle and the decryption oracle. The adversary can choose the order he makes requests to the oracles but in CryptoVerif only one oracle can be called at a time.<br />
+Check the syntax of parallel composition of oracles below.</p>
 <blockquote>
 <details>
-   <summary><b>CryptoVerif Syntax: Run oracles simultaneously</b></summary>
-<p><img src="img/Challenge_CCA2_SimulSyntax.png" alt="Could not load image." /></p>
+   <summary><b>CryptoVerif Syntax: Parallel composition of oracles</b></summary>
+<p><img src="img/Challenge_CCA2_ParallelCompSyntax.png" alt="Could not load image." /></p>
 </details>
 </blockquote>
 </details>
@@ -497,7 +497,7 @@ Check the syntax of running oracles simulateously below.</p>
 <li>Add <em>full_dec()</em></li>
 <li>Add Dec oracle</li>
 <li>modify Enc and Dec oracle to exclude trivial win (using table of ciphertexts)</li>
-<li>run oracles simultaneous</li>
+<li>run oracles parallel composition</li>
 </ol>
 </blockquote>
 <!--- Solution IND-CCA2 --->
@@ -526,7 +526,17 @@ Check the syntax of running oracles simulateously below.</p>
 <details>
   <summary>Show last game</summary>
 <p><img src="img/Challenge_CCA2_G14.png" alt="Could not load image." /></p>
-</details>
+</details><div style="break-before: page; page-break-before: always;"></div><h1 id="-self-study"><a class="header" href="#-self-study">📝 Self-Study</a></h1>
+<blockquote>
+<p>have a look at signedDH yourself</p>
+</blockquote>
+<blockquote>
+<p>talk about queries (keyA)<br />
+talk about events<br />
+talk about query using events (exclude malicious accept)
+talk about manual mode (guided)</p>
+</blockquote>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

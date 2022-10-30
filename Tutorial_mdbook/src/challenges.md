@@ -30,9 +30,6 @@ You can see a visualization of this construction on the right-hand side.
 > For this task you need to **rewrite the defintion** of _full\_enc_ to match Enc-and-Mac instead of Enc-then-Mac.
 </details>
 
-> **Solution**:  
-> 1. rewritten definition of Enc-and-Mac (should be super easy that students understand themselves)  
-> 2. explanation what the problem is (cannot merge branches in Game 7)
 
 <details>
   <summary><b>Show solution</b></summary>
@@ -48,7 +45,7 @@ You can see a visualization of this construction on the right-hand side.
 >    
 > Insert Explanation how proof fails (Merge not possible because mac(m1,...) and mac(m2,...) instead of same value)
 >
-> ![Could not load image.](img/Challenger_Fail_G7Results.png)
+> ![Could not load image.](img/Challenge_Fail_G7Results.png)
 >  </details>
 >
 >  <details>
@@ -73,7 +70,7 @@ secure using CryptoVerif.
 
 You can orientate yourself on the input file
 <a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/tutorial/enc-then-MAC-IND-CPA.ocv" target="_blank">_enc-then-MAC-IND-CPA.ocv_</a>
-presented in the chapter **First Proof**.
+presented in the chapter **First Proof**. You may require to have a look at hints 4 and 5 as they contain CryptoVerif syntax not captured by this tutorial beforehand.
 
 <!--- Hints IND-CCA2 --->
 <details>
@@ -120,12 +117,12 @@ presented in the chapter **First Proof**.
 >  <details>
 >    <summary><b>💡 Hint 5</b></summary>
 >    
-> In the IND-CCA2 game the adversary can access the encryption oracle and the decryption oracle simultaneously.  
-> Check the syntax of running oracles simulateously below.
+> In the IND-CCA2 game the adversary can access the encryption oracle and the decryption oracle. The adversary can choose the order he makes requests to the oracles but in CryptoVerif only one oracle can be called at a time.  
+> Check the syntax of parallel composition of oracles below.
 >>  <details>
->>    <summary><b>CryptoVerif Syntax: Run oracles simultaneously</b></summary>
+>>    <summary><b>CryptoVerif Syntax: Parallel composition of oracles</b></summary>
 >>    
->>  ![Could not load image.](img/Challenge_CCA2_SimulSyntax.png)
+>>  ![Could not load image.](img/Challenge_CCA2_ParallelCompSyntax.png)
 >>  </details>
 >  </details>
 
@@ -135,7 +132,7 @@ presented in the chapter **First Proof**.
 > 1. Add _full\_dec()_  
 > 2. Add Dec oracle  
 > 3. modify Enc and Dec oracle to exclude trivial win (using table of ciphertexts)  
-> 4. run oracles simultaneous
+> 4. run oracles parallel composition
 
 <!--- Solution IND-CCA2 --->
 <details>

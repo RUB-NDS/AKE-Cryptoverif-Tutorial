@@ -19,10 +19,10 @@ expand SUF_CMA_det_mac(mkey, bitstring, macs, mac, verify, Pmac).
 (* Queries *)
 query secret b.
 
-(* format of concat *)
+(* declaration of concat *)
 fun concat(bitstring, macs): bitstring [data].
 
-(* definition Enc-then-Mac encryption *)
+(* definition of Enc-then-Mac encryption *)
 letfun full_enc(m: bitstring, k: key, mk: mkey) =
   c1 <- enc(m, k);
   concat(c1, mac(c1,mk)).

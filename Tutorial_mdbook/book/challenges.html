@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="motivation.html"><strong aria-hidden="true">1.</strong> ❓ Motivation</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> 🔧 Installation</a></li><li class="chapter-item expanded "><a href="first_proof.html"><strong aria-hidden="true">3.</strong> 📚 First Proof</a></li><li class="chapter-item expanded "><a href="challenges.html" class="active"><strong aria-hidden="true">4.</strong> 💡 Challenges</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="motivation.html"><strong aria-hidden="true">1.</strong> ❓ Motivation</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> 🔧 Installation</a></li><li class="chapter-item expanded "><a href="first_proof.html"><strong aria-hidden="true">3.</strong> 📚 First Proof</a></li><li class="chapter-item expanded "><a href="challenges.html" class="active"><strong aria-hidden="true">4.</strong> 💡 Challenges</a></li><li class="chapter-item expanded "><a href="selfstudy.html"><strong aria-hidden="true">5.</strong> 📝 Self-Study</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -169,13 +169,6 @@ Note that CryptoVerif <strong>cannot find attacks</strong>. However, you should 
 For this task you need to <strong>rewrite the defintion</strong> of <em>full_enc</em> to match Enc-and-Mac instead of Enc-then-Mac.</p>
 </blockquote>
 </details>
-<blockquote>
-<p><strong>Solution</strong>:</p>
-<ol>
-<li>rewritten definition of Enc-and-Mac (should be super easy that students understand themselves)</li>
-<li>explanation what the problem is (cannot merge branches in Game 7)</li>
-</ol>
-</blockquote>
 <details>
   <summary><b>Show solution</b></summary>
 <blockquote>
@@ -186,7 +179,7 @@ For this task you need to <strong>rewrite the defintion</strong> of <em>full_enc
 <details>
    <summary><b>Explanation: How the proof fails</b></summary>
 <p>Insert Explanation how proof fails (Merge not possible because mac(m1,...) and mac(m2,...) instead of same value)</p>
-<p><img src="img/Challenger_Fail_G7Results.png" alt="Could not load image." /></p>
+<p><img src="img/Challenge_Fail_G7Results.png" alt="Could not load image." /></p>
 </details>
 <details>
    <summary><b>Solution: Derive attack on Enc-and-Mac</b></summary>
@@ -207,7 +200,7 @@ Your goal is to prove that Enc-then-Mac is then
 secure using CryptoVerif.</p>
 <p>You can orientate yourself on the input file
 <a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/tutorial/enc-then-MAC-IND-CPA.ocv" target="_blank"><em>enc-then-MAC-IND-CPA.ocv</em></a>
-presented in the chapter <strong>First Proof</strong>.</p>
+presented in the chapter <strong>First Proof</strong>. You may require to have a look at hints 4 and 5 as they contain CryptoVerif syntax not captured by this tutorial beforehand.</p>
 <!--- Hints IND-CCA2 --->
 <details>
   <summary><b>❓ Need any hints? Click here.</b></summary>
@@ -246,12 +239,12 @@ You may use tables in CryptoVerif to do so. Check the syntax of tables below.</p
 </details>
 <details>
    <summary><b>💡 Hint 5</b></summary>
-<p>In the IND-CCA2 game the adversary can access the encryption oracle and the decryption oracle simultaneously.<br />
-Check the syntax of running oracles simulateously below.</p>
+<p>In the IND-CCA2 game the adversary can access the encryption oracle and the decryption oracle. The adversary can choose the order he makes requests to the oracles but in CryptoVerif only one oracle can be called at a time.<br />
+Check the syntax of parallel composition of oracles below.</p>
 <blockquote>
 <details>
-   <summary><b>CryptoVerif Syntax: Run oracles simultaneously</b></summary>
-<p><img src="img/Challenge_CCA2_SimulSyntax.png" alt="Could not load image." /></p>
+   <summary><b>CryptoVerif Syntax: Parallel composition of oracles</b></summary>
+<p><img src="img/Challenge_CCA2_ParallelCompSyntax.png" alt="Could not load image." /></p>
 </details>
 </blockquote>
 </details>
@@ -263,7 +256,7 @@ Check the syntax of running oracles simulateously below.</p>
 <li>Add <em>full_dec()</em></li>
 <li>Add Dec oracle</li>
 <li>modify Enc and Dec oracle to exclude trivial win (using table of ciphertexts)</li>
-<li>run oracles simultaneous</li>
+<li>run oracles parallel composition</li>
 </ol>
 </blockquote>
 <!--- Solution IND-CCA2 --->
@@ -301,6 +294,9 @@ Check the syntax of running oracles simulateously below.</p>
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next" href="selfstudy.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -312,6 +308,9 @@ Check the syntax of running oracles simulateously below.</p>
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next" href="selfstudy.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
