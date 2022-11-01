@@ -24,10 +24,10 @@ query secret b.
 
 fun concat(bitstring, macs): bitstring [data].
 
-(* definition Enc-and-Mac *)
+(* definition of Enc-and-Mac encryption *)
 letfun full_enc(m: bitstring, k: key, mk: mkey) =
   c1 <- enc(m,k);
-  concat(c1,mac(m,mk)).
+  concat(c1, mac(m,mk)).
 
 let QencLR(b0: bool, k: key, mk: mkey) = 
     	foreach i <= qEnc do

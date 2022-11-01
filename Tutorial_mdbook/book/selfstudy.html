@@ -143,15 +143,42 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="-self-study"><a class="header" href="#-self-study">📝 Self-Study</a></h1>
+<p>In this chapter you are welcome to have a look at how CryptoVerif proves the authenticated key exchange protocol <em>signed Diffie-Hellman</em> secure in a multi-party, multi-session environment.</p>
+<p>We will not have an in-depth look at every line of the input file as in the chapter <strong>First Proof</strong>. You will recognize many similar structures. We will have a look at some code snippets discussing the most important differences.<br />
+One interesting aspect, for example, is how CryptoVerif excludes <em>malicious accepts</em>.<br />
+Further, in this proof you can see how CryptoVerif can be guided through the proof (interactive mode). </p>
+<p>You can find the input file <em>signedDH.ocv</em>
+<a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/tutorial/signedDH.ocv" target="_blank">here</a>.</p>
+<h2 id="secrecy-of-session-key"><a class="header" href="#secrecy-of-session-key">Secrecy of session key</a></h2>
+<p>The queries to prove secrecy of to session key <em>keyA</em> and <em>keyB</em> have the same syntax as we have seen before to prove the secrecy of bit <em>b</em>.</p>
+<p><img src="img/SelfStudy_SessionKeyQuery.png" alt="Could not load image." /></p>
+<p>The difference here is that the values of <em>keyA</em> and <em>keyB</em> are depending on the messages the communicating parties have sent each other (key agreement).<br />
+We only want to prove secrecy in case the two honest parties <em>A</em> and <em>B</em> interacted. There is a problem where another party besides <em>B</em> can communicate with party <em>A</em> and trivially know the agreed key. Because of this you can see a little trick in the following code snippet. The value of the agreed key is stored in <em>kA</em> at first. Only if the other party is <em>B</em> then the value of <em>keyA</em> is set to <em>kA</em>. Otherwise, <em>kA</em> will be directly leaked.</p>
+<p><img src="img/SelfStudy_SessionKeyTrick.png" alt="Could not load image." /></p>
+<h2 id="events"><a class="header" href="#events">Events</a></h2>
 <blockquote>
-<p>have a look at signedDH yourself</p>
+<p>talk about events<br />
+trigger: &quot;record event&quot;</p>
 </blockquote>
+<p>In CryptoVerif we can also use events. You can see the declaration of the events <em>endA</em>, <em>beginB</em>, and <em>endB</em> in the following. They also have parameters of the given types associated to them.</p>
+<p><img src="img/SelfStudy_Events.png" alt="Could not load image." /></p>
+<p><img src="img/SelfStudy_EventTrigger.png" alt="Could not load image." /></p>
+<p>From the code depicted above you can also understand that the single messages of a protocol are defined as oracles in CryptoVerif.</p>
+<h2 id="exclude-malicious-accept"><a class="header" href="#exclude-malicious-accept">Exclude malicious accept</a></h2>
 <blockquote>
-<p>talk about queries (keyA)<br />
-talk about events<br />
-talk about query using events (exclude malicious accept)
-talk about manual mode (guided)</p>
+<p>talk about query using events (exclude malicious accept)</p>
 </blockquote>
+<p>Now we want CryptoVerif to proof that a malicious accept is not possible. For this we write queries using the events <em>endA</em>, <em>beginB</em>, and <em>endB</em> shown in the previous section.</p>
+<p><img src="img/SelfStudy_ExcludeMA.png" alt="Could not load image." /></p>
+<p>In the upper query we want to prove that for each event <em>endA</em> there exists one distinct event <em>beginB</em> with the same parameters. This should be proven even if the shared secrets <em>keyA</em> and <em>keyB</em> are leaked. We indicate this using the keyword <strong>public_vars</strong>.<br />
+To be more precise, when this query is proven it means that party <em>A</em> can authenticate party <em>B</em>, even if any shared secrets leaks.</p>
+<p>The lower query is the other way around. We want to show that <em>B</em> can authenticate <em>A</em>, even if any shared secret is leaked. For each event <em>endB</em> there exists one distinct event <em>endA</em> with the same parameters.</p>
+<h2 id="interactive-mode"><a class="header" href="#interactive-mode">Interactive mode</a></h2>
+<blockquote>
+<p>talk about interactive mode (guided)<br />
+refer back to IND-CPA equivalence (use ind_cpa(enc) in interactive mode)</p>
+</blockquote>
+<p><img src="img/SelfStudy_InteractiveMode.png" alt="Could not load image." /></p>
 
                     </main>
 

@@ -1,13 +1,6 @@
 # ❓ Motivation
 
-<!--- Links to official website, Introduction paper(2017), Tutorial, (Git),... --->
-
 ## What is CryptoVerif?
-> formalizes sequence of games (game hopping)  
-> computes bound on advantage (exact security)  
-> computational model  
-> specialized probabilistic process calculus language (inspired by pi calculus https://en.wikipedia.org/wiki/%CE%A0-calculus)  
-> interactive mode  
 
 <a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/" target="_blank">CryptoVerif</a>
 is a tool for proving cryptographic protocols automatically in the computational model. It formalizes the
@@ -17,6 +10,6 @@ proving technique (often also called game hopping). CryptoVerif computes a bound
 CryptoVerif has an automatic mode, as well as an interactive mode.
 
 ## Why you should learn about it
-> CryptoVerif can prove secrecy, authentication, and indistinguishability properties.
-> CryptoVerif cannot find attacks BUT failed proof may help you to find such an attack (on a protocol you considered and "proofed" to be secure)
 
+CryptoVerif can be used to prove secrecy, authentication, and indistinguishability properties of cryptographic protocols. You can use it, for example, to verify your handwritten proof and check for any human made mistakes.  
+Note that CryptoVerif cannot find attacks **but** the output of the failed proof may help you to derive an concrete attack on a protocol you considerd to be secure.

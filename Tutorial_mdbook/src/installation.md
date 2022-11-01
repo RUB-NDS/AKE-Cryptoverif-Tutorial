@@ -1,7 +1,6 @@
 # 🔧 Installation
-<!---
-add GitHub Link to avoid licence clicking (if Bruno allows it)
---->
+<!--- add GitHub Link to avoid licence clicking (if Bruno allows it) --->
+
 > ℹ️ This tutorial only shows how to install CryptoVerif and its requirements on **Ubuntu**.  
 > It is also possible to run CryptoVerif under other Linux distributions and Windows.  
 > For information take a look at the _README_ file in the downloaded CryptoVerif folder.
@@ -67,7 +66,7 @@ opam install cryptokit
 Let´s try to run CryptoVerif on an example protocol. You need to be in the directory _cryptoverif2.06_ where the executable _cryptoverif_ is located, before executing the following command.
 
 ```
-./cryptoverif examples/basic/OtwayRees.pcv
+./cryptoverif examples/basic/pfdh.cv
 ```
 	
 Your result should end like this:

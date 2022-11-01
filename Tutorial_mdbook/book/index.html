@@ -143,15 +143,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="-motivation"><a class="header" href="#-motivation">❓ Motivation</a></h1>
-<!--- Links to official website, Introduction paper(2017), Tutorial, (Git),... --->
 <h2 id="what-is-cryptoverif"><a class="header" href="#what-is-cryptoverif">What is CryptoVerif?</a></h2>
-<blockquote>
-<p>formalizes sequence of games (game hopping)<br />
-computes bound on advantage (exact security)<br />
-computational model<br />
-specialized probabilistic process calculus language (inspired by pi calculus https://en.wikipedia.org/wiki/%CE%A0-calculus)<br />
-interactive mode</p>
-</blockquote>
 <p><a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/" target="_blank">CryptoVerif</a>
 is a tool for proving cryptographic protocols automatically in the computational model. It formalizes the
 <a href="https://shoup.net/papers/games.pdf" target="_blank">sequence of games</a>
@@ -159,10 +151,8 @@ proving technique (often also called game hopping). CryptoVerif computes a bound
 <a href="https://en.wikipedia.org/wiki/%CE%A0-calculus" target="_blank">pi-calculus</a>.<br />
 CryptoVerif has an automatic mode, as well as an interactive mode.</p>
 <h2 id="why-you-should-learn-about-it"><a class="header" href="#why-you-should-learn-about-it">Why you should learn about it</a></h2>
-<blockquote>
-<p>CryptoVerif can prove secrecy, authentication, and indistinguishability properties.
-CryptoVerif cannot find attacks BUT failed proof may help you to find such an attack (on a protocol you considered and &quot;proofed&quot; to be secure)</p>
-</blockquote>
+<p>CryptoVerif can be used to prove secrecy, authentication, and indistinguishability properties of cryptographic protocols. You can use it, for example, to verify your handwritten proof and check for any human made mistakes.<br />
+Note that CryptoVerif cannot find attacks <strong>but</strong> the output of the failed proof may help you to derive an concrete attack on a protocol you considerd to be secure.</p>
 
                     </main>
 

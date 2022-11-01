@@ -111,6 +111,7 @@ event endA(host, host, G, G).
 event beginB(host, host, G, G).
 event endB(host, host, G, G).
 
+(* Exclude malicious accept *)
 query y: G, x: G;
   inj-event(endA(A, B, x, y)) ==> inj-event(beginB(A, B, x, y))
   public_vars keyA, keyB.

@@ -52,7 +52,8 @@ let QencLR(b0: bool, k: key, mk: mkey) =
 	Oenc (m1: bitstring, m2: bitstring) :=
 	if Z(m1) = Z(m2) then (* m1 and m2 have the same length *)
 	m0 <- if b0 then m1 else m2;
-	c0 <- full_enc(m0,k,mk);
+	c0 <- full_enc(m0, k, mk);
+  (* store ciphertext to exclude trivial win in Dec-Oracle *)
 	insert ciphertexts(c0);
 	return(c0).
 	
@@ -62,7 +63,7 @@ let Qdec(k: key, mk: mkey) =
 	Odec (c: bitstring) :=
   (* check if ciphertexts has been outputed by Enc oracle *)
 	get ciphertexts(=c) in return(bottom) else
-	return(full_dec(c,k,mk)).
+	return(full_dec(c, k, mk)).
 	
 
 (* Initial game to proof *)
@@ -74,6 +75,6 @@ process
 	k <-R key;
 	mk <-R mkey;
 	return;
-	(* run QencLR and Qdec simultaneously *)
+	(* run QencLR and Qdec in parallel composition *)
 	(run QencLR(b,k,mk) | run Qdec(b,k,mk))
 	
