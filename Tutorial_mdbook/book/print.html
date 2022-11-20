@@ -144,6 +144,23 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="-motivation"><a class="header" href="#-motivation">❓ Motivation</a></h1>
+<!--- TODOS: 
+Schreiben:
+* Advantage
+* Derive Attack
+* interactive mode
+
+
+* Screenshot Equivalence austauschen
+* Veranschaulichung if not mergable?
+* Name LoR-CPA mit Links
+* Highlighting ändern: Vlt nur farbiger Rahme um relevante Stellen
+* (Benjamin: Derive attack)
+* Benjamin: Bedeutung return in Initial Game
+* Benjamin: Wie proved CryptoVerif die secrecy von b in game 8?
+* LanguageTool Überprüfung
+
+--->
 <h2 id="what-is-cryptoverif"><a class="header" href="#what-is-cryptoverif">What is CryptoVerif?</a></h2>
 <p><a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/" target="_blank">CryptoVerif</a>
 is a tool for proving cryptographic protocols automatically in the computational model. It formalizes the
@@ -261,10 +278,11 @@ The type of keys is declared at the top of the input file, depicted in the follo
 Note that it is possible to make an exact specification of the length to CryptoVerif.</p>
 <p>Now we want to gain a better understanding of how CryptoVerif is doing game transformations. Once again, we will take the IND-CPA assumption as an example.<br />
 Let´s have a look at a code snippet from the macro <em>IND_CPA_sym_enc</em> in the default library <em>default.ocvl</em> depicted below.</p>
+<!--- check line numbers (Screenshot lines 136-142) --->
 <p><img src="img/FirstProof_Equivalence.png" alt="Could not load image." /></p>
 <p>This equivalence defines how the IND-CPA game hop looks like. CryptoVerif will look for code segments matching with the upper block (lines 136-138) and will replace them with the lower block (lines 140-142) to perform this game hop. If it does so, the probability stated in line 139 will be added to the bound of the advantage of an adversary.</p>
 <p>Let´s compare the upper block (lines 136-138) with the lower block (lines 140-142) to see why this equivalence is suitable for the IND-CPA assumption.<br />
-We start with an uniformly random sampled encryption key <em>k</em> (line 136+140). The lines 137-138 and lines 141-142 are representing the encryption oracle using replication of the oracle <em>Oenc</em>.</p>
+We start with an uniformly random sampled encryption key <em>k</em> (line 136+140). The lines 137-138 and lines 141-142 are representing the encryption oracle using replication of the oracle <em>Oenc</em>. Oracles are defined by the usage of &quot;:=&quot;.</p>
 <blockquote>
 <p>ℹ️ Replication of oracles are used to indicate that an oracle can be executed multiple times. In the code snippet above the oracle <em>Oenc</em> is replicated <em>N</em> times. The variable <em>N</em> is no conrete value and the oracle is not indeed executed multiple times.</p>
 </blockquote>
@@ -296,62 +314,68 @@ Next, we concatenate the ciphertext <em>c1</em> with the MAC of the ciphertext <
 Sequential execution is denoted by “;”. In the above code snippet you can see this in the line where <em>c1</em> is set to the ciphertext. The semicolon indicates that there is a line of code following which should be executed afterwards.<br />
 The line with the concationation is the last expression belonging to <em>full_enc</em>. This block of code is ended with “.”.</p>
 <h3 id="initial-game-to-prove-including-oracles"><a class="header" href="#initial-game-to-prove-including-oracles">Initial game to prove (including oracles)</a></h3>
-<p>Now we want to construct the initial game CryptoVerif should try to proof using the sequence of games. In our example this is the IND-CPA game. Note that for many games there are oracles the adversary can query. Here, an encryption oracle from the IND-CPA game is required. We will start with this oracle before proceeding with the initial game.</p>
-<blockquote>
-<p>QencLR (oracle)  difference = and :=
-adversary makes calls to the oracle(s) (interaction)</p>
-</blockquote>
+<p>Now we want to construct the initial game CryptoVerif should try to proof using the sequence of games. In our example this is the IND-CPA game. Note that for many games there are oracles the adversary has access to. Here, an encryption oracle from the IND-CPA game is required. We will start with this oracle before proceeding with the initial game.</p>
 <p>The code of the encryption oracle is depicted below.</p>
 <p><img src="img/FirstProof_EncOracle.png" alt="Could not load image." /></p>
-<blockquote>
-<p>talk about keyword <strong>let</strong> and oracles<br />
-talk about equivalency of IND-CPA and LoR-CPA</p>
-</blockquote>
-<p>The oracle is implemented as a left-or-right oracle. That means that the oracle receives two plaintexts in each query made by the adversary and always encrypts the left plaintext or always encrypts the right plaintext depending on the value of <em>b</em>.</p>
-<blockquote>
-<p>talk about replication (foreach i &lt;= qEnc do)<br />
-param qEnc. at top of file  (no real number) (just put into adversary advantage)
-if branches cannot be merged</p>
-</blockquote>
+<p>First, let's talk about the keyword <strong>let</strong> used for this oracle. With this the subprocess <em>QencLR</em> is defined. The code in this subprocess will be inlined inside the main process we will see later on. It is not required to do it this way. You can also put the whole code inside the main process where you need it. Using this approach you can structure your code for a lot better readability. </p>
+<!--- TODO --->
+<!--- Check name of "LoR-CPA" and put link to source --->
+<p>The encryption oracle is implemented as a left-or-right oracle. That means that the oracle receives two plaintexts in each query made by the adversary and always encrypts the left plaintext or always encrypts the right plaintext depending on the value of <em>b</em>.<br />
+Note the equivalency of IND-CPA and LoR-CPA.</p>
+<p>The oracle <em>Oenc</em> we want to define should be callable by the adversary multiple times. We modelize this by oracle replication. The oracle can be called <em>qEnc</em> times. <em>qEnc</em> is just a parameter defined at the top of the input file and is not an actual number. The parameter is put into the bound of the advantage of the adversary at a corresponding game hop.<br />
+The adversary can make calls to the oracle. This modelizes the interaction between the adversary and the game.</p>
 <p><img src="img/FirstProof_Params.png" alt="Could not load image." /></p>
+<p>The oracle <em>Oenc</em> takes two plaintexts <em>m1</em> and <em>m2</em> as input. As distinguishing ciphertexts of plaintexts with different leakage in the encryption is easy, the oracle should only respond with the ciphertext if the leakage of the received plaintexts is the same.<br />
+Remember: Interpreting the leakage of the encryption as the length of the plaintext this means that <em>m1</em> and <em>m2</em> should have the same length. This property is also refered to in many definitions of the IND-CPA assumption.</p>
+<!--- Veranschaulichung einbauen? --->
 <blockquote>
-<p>OStart (first game)<br />
-talk about queries (query secret b.)<br />
-talk about run<br />
-talk about main process and sub processes</p>
+<p>ℹ️ <strong>If-branches cannot be merged</strong> in CryptoVerif. This means that expressions that should be executed after the conditioned expression have to be put inside the matchBranch and the noMatchBranch.</p>
 </blockquote>
+<p>The value of <em>m0</em> is set to <em>m1</em> or <em>m2</em>, depending on the bit <em>b0</em>. Then, we return the Enc-then-MAC encryption of <em>m0</em> under the encryption key <em>k</em> and the MAC key <em>mk</em>.<br />
+As <em>b0</em> is fixed for the left-or-right oracle, this means that we always encrypt <em>m1</em> or always encrypt <em>m2</em>. </p>
+<p>In our initial game we want to prove the secrecy of the bit <em>b</em>. We use the query depicted in the following to tell CryptoVerif what should be proven.</p>
 <p><img src="img/FirstProof_Queries.png" alt="Could not load image." /></p>
+<p>The initial game is displayed in the following code snippet.</p>
 <p><img src="img/FirstProof_InitalGame.png" alt="Could not load image." /></p>
-<p>In the very last line there is no “.” as the file ends here.</p>
+<p>In CryptoVerif the initial game is the main process. This is indicated by the keyword <strong>process</strong>. There can be only one main process.<br />
+Inside this process we define the oracle <em>OStart</em>. Here you will recognize how this oracle represents the initial game, to be more specific, the IND-CPA game.<br />
+The bit <em>b</em> is drawn as a random boolean value, being either 0 or 1. Further the keys are drawn random from their corresponding keyspaces. The encryption key <em>k</em> is uniformly random of type <em>key</em>. The MAC key <em>mk</em> is uniformly random of type <em>mkey</em>.</p>
+<!--- meaning return --->
+<p>With the keyword <strong>run</strong> a subprocess can be executed. We run the previously defined subprocess <em>QencLR</em> with the random bit <em>b</em>, the random encryption key <em>k</em>, and the random MAC key <em>mk</em> as arguments. This subprocess contains the encryption oracle that can be called by the adversary against the IND-CPA game.<br />
+In the very last line there is no “.” as the file ends here.</p>
 <h2 id="execute"><a class="header" href="#execute">Execute</a></h2>
 <p>The input file is now ready and we can execute CryptoVerif to let it try proof our query.<br />
 You can find the input file <em>enc-then-MAC-IND-CPA.ocv</em>
 <a href="https://bblanche.gitlabpages.inria.fr/CryptoVerif/tutorial/enc-then-MAC-IND-CPA.ocv" target="_blank">here</a>.</p>
-<p>When in the same directory as the executable <em>cryptoverif</em> you can run CryptoVerif on our created input file using the following command. (The file already exists in the folder <em>examples/basic</em>.)</p>
+<p>When in the same directory as the executable <em>cryptoverif</em> you can run CryptoVerif on our created input file using the following command. (The presented input file already exists in the folder <em>examples/basic</em>.)</p>
 <pre><code>./cryptoverif examples/basic/enc-then-MAC-IND-CPA.ocv
 </code></pre>
-<blockquote>
-<p>explain output of CryptoVerif</p>
-</blockquote>
-<blockquote>
-<p>show IND-CPA game hop. replacement of x with Z(x) as explained before</p>
-</blockquote>
+<h2 id="output"><a class="header" href="#output">Output</a></h2>
+<p>Let's have a look at the output of CryptoVerif and see how it proved the Enc-then-MAC construction IND-CPA secure under the given cryptographic assumptions.<br />
+CryptoVerif proves the secrecy of bit <em>b</em> in eight games. We will not talk about every game hop. When you take a look at the first game hops you will see that many game hops are of syntactic nature. Note that the first game is already inlined. Examples for syntactic game hops are expanding if statements or renaming variables.</p>
+<p>We will take a closer look at the game hop where the assumption that the encryption scheme is IND-CPA secure is used. You can expand the IND-CPA game hop below.</p>
 <details>
-  <summary>Show IND-CPA game hop</summary>
+  <summary><b>Show IND-CPA game hop</b></summary>
 <p><img src="img/FirstProof_G4_5.png" alt="Could not load image." /></p>
 </details>
-<blockquote>
-<p>emphasize last game hop as preparation for the first challenge<br />
-show Merging game hop</p>
-</blockquote>
+<p>In Game 4, the game before the IND-CPA game hop, you can see that besides some syntactic changes not much has changed compared to the initial game. The previous syntactic game hops are neccessary to fulfill the requirements to apply the IND-CPA equivalence. We talked about this equivalence in detail in the section <strong>Cryptographic Assumptions</strong>.<br />
+Depending on the value of bit <em>b</em> either the plaintext <em>m1</em> or <em>m2</em> is encrypted using the Enc-then-MAC encryption. For this game hop we will focus only on the part of the Enc-then-MAC construction where the plaintext <em>m1</em> or <em>m2</em> is encrypted using the encryption scheme <em>enc</em>. The plaintexts for this encryption are highlighted in the output of CryptoVerif.<br />
+As we told CryptoVerif that the encryption scheme is IND-CPA secure by expanding the corresponding macro, the defined equivalence can be applied here. As we have previously seen, the plaintext to be encrypted is replaced by the leakage of the encryption of this plaintext. Having a look at the highlighted parts in Game 5 you can see that this equivalence has been applied. Note that the equivalence has been applied twice, once for each branch of the if statement. This equivalence models the IND-CPA assumption.</p>
+<p>We will now take a look at the last game hop and understand why the secrecy of bit <em>b</em> can be proven in the last game. You can expand the last game hop (Merging game hop) below.</p>
 <details>
-  <summary>Show Merging game hop</summary>
+  <summary><b>Show Merging game hop</b></summary>
 <p><img src="img/FirstProof_G7_8.png" alt="Could not load image." /></p>
 </details>
-<blockquote>
-<p>explain advantage (put together through games e.g. Penc from ind_cpa hop)</p>
-</blockquote>
+<p>In the last game hop the branches of the if statement depending on the value of bit <em>b</em> are merged. This is possible as both branches are semantically equal.<br />
+First, in both branches a seed is sampled uniformly random. The ciphertexts <em>c1</em> are generated by using the same encryption function, the same encryption key, and a uniformly random sampled seed. We have to take a look at the plaintexts that are used for the encryption. In the upper branch <em>Z(m1)</em> is encrypted while in the lower branch <em>Z(m2)</em> is encrypted. As <em>Z</em> models the leakage of the encryption both values are the same. The return statements are also the same in both branches. Therefore, the branches can be merged.</p>
+<p>The bit <em>b</em> was only used in the if statement whose branches we merged with the last game hop. Therefore, it is quite trivial that the secrecy of bit <em>b</em> can be proven as it is not used anywhere in the game anymore.</p>
+<p>In the following you can see that CryptoVerif proved the secrecy of bit <em>b</em> in game 8. You can also see the bound of the advantage of the adversary. In the last line it is stated that all queries have been proven. Therefore, the proof done by CryptoVerif is finished.</p>
 <p><img src="img/FirstProof_Advantage.png" alt="Could not load image." /></p>
+<p>Only the games discussed before in detail are affecting the advantage of the adversary. For simplicity we will use the term &quot;advantage in game X&quot; when describing the &quot;advantage regarding the secrecy of bit <em>b</em> in game X&quot;.<br />
+First, you can see that the advantage in game 1 is bounded by twice the probability defined by the IND-CPA equivalence (<em>Penc</em>) plus the advantage in game 8. The factor of two is because the equivalence has been applied twice in the IND-CPA game hop. Second, the advantage in game 8 is bounded by zero as the secrecy of bit <em>b</em> in game 8 is trivial as explained before.<br />
+These advantages are put together to form the final result advantage.</p>
+<p>The advantage depends on some parameters like the length of the plaintexts or the time. CryptoVerif also defines the result time as the time of the relevant operations used.</p>
+<h3 id="tex-output"><a class="header" href="#tex-output">TeX output</a></h3>
 <p>CryptoVerif also allows to write its output to a TeX file. You can see an example in the following.</p>
 <pre><code>mkdir tex
 ./cryptoverif -tex ./tex/enc-then-MAC-IND-CPA examples/basic/enc-then-MAC-IND-CPA.ocv
@@ -535,6 +559,9 @@ To be more precise, when this query is proven it means that party <em>A</em> can
 refer back to IND-CPA equivalence (use ind_cpa(enc) in interactive mode)</p>
 </blockquote>
 <p><img src="img/SelfStudy_InteractiveMode.png" alt="Could not load image." /></p>
+<blockquote>
+<p>ℹ️ Note that CryptoVerif is also able to prove the Signed DH protocol in automatic mode.</p>
+</blockquote>
 
                     </main>
 

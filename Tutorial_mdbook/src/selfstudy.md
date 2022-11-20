@@ -55,3 +55,5 @@ The lower query is the other way around. We want to show that _B_ can authentica
 
 
 ![Could not load image.](img/SelfStudy_InteractiveMode.png)
+
+> ℹ️ Note that CryptoVerif is also able to prove the Signed DH protocol in automatic mode.

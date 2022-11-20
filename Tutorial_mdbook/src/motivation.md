@@ -1,4 +1,22 @@
 # ❓ Motivation
+<!--- TODOS: 
+Schreiben:
+* Advantage
+* Derive Attack
+* interactive mode
+
+
+* Screenshot Equivalence austauschen
+* Veranschaulichung if not mergable?
+* Name LoR-CPA mit Links
+* Highlighting ändern: Vlt nur farbiger Rahme um relevante Stellen
+* (Benjamin: Derive attack)
+* Benjamin: Bedeutung return in Initial Game
+* Benjamin: Wie proved CryptoVerif die secrecy von b in game 8?
+* LanguageTool Überprüfung
+
+--->
+
 
 ## What is CryptoVerif?
 
