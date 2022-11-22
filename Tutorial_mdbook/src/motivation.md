@@ -1,13 +1,10 @@
 # ❓ Motivation
 <!--- TODOS: 
 Schreiben:
-* Advantage
 * Derive Attack
-* interactive mode
 
 
-* Screenshot Equivalence austauschen
-* Veranschaulichung if not mergable?
+* Screenshot Equivalence austauschen (richtige Lines)
 * Name LoR-CPA mit Links
 * Highlighting ändern: Vlt nur farbiger Rahme um relevante Stellen
 * (Benjamin: Derive attack)
