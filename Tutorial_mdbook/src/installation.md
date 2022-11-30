@@ -1,9 +1,8 @@
 # 🔧 Installation
-<!--- add GitHub Link to avoid licence clicking (if Bruno allows it) --->
 
 > ℹ️ This tutorial only shows how to install CryptoVerif and its requirements on **Ubuntu**.  
 > It is also possible to run CryptoVerif under other Linux distributions and Windows.  
-> For information take a look at the _README_ file in the downloaded CryptoVerif folder.
+> For information, take a look at the _README_ file in the downloaded CryptoVerif folder.
 
 **DIY Links:**
 <a href="https://ocaml.org/docs/up-and-running" target="_blank">OCaml</a>,
@@ -27,8 +26,8 @@ apt update
 apt install opam
 ```
 	
-For CryptoVerif to work it is important to install the OCaml compiler as well.  
-After the execution of the first command you may be asked if you want to modify a file ~/.profile. You can answer with the default "N".
+For CryptoVerif to work, it is important to install the OCaml compiler as well.  
+After the execution of the first command, you may be asked if you want to modify a file ~/.profile. You can answer with the default "N".
 When asked if you want to add a hook, you can answer with the default "y".
 
 ```
@@ -43,7 +42,7 @@ ocaml -version
 ```
 	
 ## Install CryptoVerif
-First, you need to uncompress the previously downloaded _cryptoverif2.06.tar.gz_.
+First, you need to decompress the previously downloaded _cryptoverif2.06.tar.gz_.
 
 ```
 tar -xzf cryptoverif.2.06.tar.gz
@@ -63,13 +62,13 @@ opam install cryptokit
 ```
 	
 ## Test for successful installation
-Let´s try to run CryptoVerif on an example protocol. You need to be in the directory _cryptoverif2.06_ where the executable _cryptoverif_ is located, before executing the following command.
+Let’s try to run CryptoVerif on an example protocol. You need to be in the directory _cryptoverif2.06_ where the executable _cryptoverif_ is located, before executing the following command.
 
 ```
 ./cryptoverif examples/basic/pfdh.cv
 ```
 	
-Your result should end like this:
+The end of the result should look like this:
 
 ![Could not load image. Expect "All queries proved."](img/PFDH_Output.png "Excpected output")
 

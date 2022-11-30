@@ -1,18 +1,4 @@
 # ❓ Motivation
-<!--- TODOS: 
-Schreiben:
-* Derive Attack
-
-
-* Screenshot Equivalence austauschen (richtige Lines)
-* Name LoR-CPA mit Links
-* Highlighting ändern: Vlt nur farbiger Rahme um relevante Stellen
-* (Benjamin: Derive attack)
-* Benjamin: Bedeutung return in Initial Game
-* Benjamin: Wie proved CryptoVerif die secrecy von b in game 8?
-* LanguageTool Überprüfung
-
---->
 
 
 ## What is CryptoVerif?
@@ -27,4 +13,10 @@ CryptoVerif has an automatic mode, as well as an interactive mode.
 ## Why you should learn about it
 
 CryptoVerif can be used to prove secrecy, authentication, and indistinguishability properties of cryptographic protocols. You can use it, for example, to verify your handwritten proof and check for any human made mistakes.  
-Note that CryptoVerif cannot find attacks **but** the output of the failed proof may help you to derive an concrete attack on a protocol you considerd to be secure.
+Note that CryptoVerif cannot find attacks, **but** the output of the failed proof may help you to derive a concrete attack on a protocol you may even considerd to be secure before.
+
+
+### Author
+This tutorial is made by Marc Hafner. The tutorial was done as a Master's project at the Chair for Network and Data Security, Ruhr-University Bochum.  
+Advisors: Benjamin Lipp, Marcus Brinkmann  
+Special thanks to Benjamin for his support, helping me understand CryptoVerif better after each meeting.
