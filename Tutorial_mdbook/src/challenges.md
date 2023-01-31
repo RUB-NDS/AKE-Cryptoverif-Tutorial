@@ -4,9 +4,9 @@
 
 In the first challenge, we will consider the
 <a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-and-MAC_(E&M)" target="_blank">Enc-and-MAC</a>
-construction. The assumptions on the cryptographic primitives are the same as in the chapter **First Proof**. The symmetric encryption is IND-CPA secure and the MAC is SUF-CMA secure.
+construction. The assumptions on the cryptographic primitives are the same as in the chapter **First Proof**: The symmetric encryption is IND-CPA-secure and the MAC is SUF-CMA-secure.
 
-**Try** to prove that Enc-and-MAC is IND-CPA secure using CryptoVerif. As you may already know, that **cannot be proven** as attacks exist.  
+**Try** to prove that Enc-and-MAC is IND-CPA-secure using CryptoVerif. As you may already know, that **cannot be proven** as attacks exist.  
 In this challenge, you should inspect CryptoVerif’s output and understand why the sequence of games failed.  
 Note that CryptoVerif **cannot find attacks**. However, you should use CryptoVerif’s output to derive a concrete attack on the Enc-and-MAC construction.
 
@@ -24,7 +24,7 @@ You can see a visualization of this construction on the right-hand side.
   <summary><b>❓ Don’t know how to proceed? Click here.</b></summary>
 
 > The input file is almost the same as _enc-then-MAC-IND-CPA.ocv_ discussed in the chapter **First Proof**.  
-> For this task, you need to **rewrite the definition ** of _full\_enc_ to match Enc-and-MAC instead of Enc-then-MAC.
+> For this task, you need to **rewrite the definition** of _full\_enc_ to match Enc-and-MAC instead of Enc-then-MAC.
 </details>
 
 <br/>
@@ -51,16 +51,16 @@ You can see a visualization of this construction on the right-hand side.
 > Now we want to use the output of the failed CryptoVerif proof to derive an attack against the Enc-and-MAC construction.  
 > As shown before, the proof failed because the branches of the if statement could not be merged. This was because the MACs were computed over the different plaintexts m1 and m2. When we try to derive an attack against the Enc-and-MAC construction, we will start at this part.  
 >
-> Our goal is to show that the Enc-and-MAC construction is not necessarily IND-CPA secure when the encryption scheme is assumed to be IND-CPA secure and the MAC is considered SUF-CMA secure. We know that the fact that the MAC is computed over the plaintext instead of the ciphertext is probably connected to the reason why the proof fails.  
+> Our goal is to show that the Enc-and-MAC construction is not necessarily IND-CPA-secure when the encryption scheme is assumed to be IND-CPA-secure and the MAC is considered SUF-CMA-secure. We know that the fact that the MAC is computed over the plaintext instead of the ciphertext is probably connected to the reason why the proof fails.  
 > As we want to derive an attack against the IND-CPA security, we aim for revealing any information about the plaintext. The most simple way of doing so is by revealing the whole plaintext. Combine this with the fact that SUF-CMA security of a MAC does not make any statements about confidentiality. You can define a MAC named _MAC_ using a SUF-CMA secure MAC named _MAC'_ as follows.
 >
 > ![Could not load image.](img/Challenge_Fail_MAC_prime.png)
 >
-> It is easy to prove that the newly constructed MAC is still SUF-CMA secure. For further information, you can have a look at 
+> It is easy to prove that the newly constructed MAC is still SUF-CMA-secure. For further information, you can have a look at 
 <a href="https://link.springer.com/content/pdf/10.1007/3-540-44647-8_19.pdf" target="_blank">Krawczyk's work (Chapter 4)</a>.
-> Instantiating the Enc-and-MAC construction with the newly constructed MAC, it is quite obvious that it cannot be IND-CPA secure. The message encrypted is always appended to the MAC and is directly revealed in the Enc-and-MAC ciphertext. This way, the adversary can say which plaintext has been encrypted with probability one.
+> Instantiating the Enc-and-MAC construction with the newly constructed MAC, it is quite obvious that it cannot be IND-CPA-secure. The message encrypted is always appended to the MAC and is directly revealed in the Enc-and-MAC ciphertext. This way, the adversary can say which plaintext has been encrypted with probability 1.
 > 
-> 💡 Feel free to experiment with CryptoVerif if you want to. For example, you can use CryptoVerif to prove that the newly constructed MAC revealing the message is still SUF-CMA secure.
+> 💡 Feel free to experiment with CryptoVerif if you want to. For example, you can use CryptoVerif to prove that the newly constructed MAC revealing the message is still SUF-CMA-secure.
 >  </details>
 </details>
 
@@ -69,10 +69,9 @@ You can see a visualization of this construction on the right-hand side.
 
 In the second challenge, we will consider the
 <a href="https://en.wikipedia.org/wiki/Authenticated_encryption#Encrypt-and-MAC_(E&M)" target="_blank">Enc-then-MAC</a>
-construction again. The assumptions on the cryptographic primitives are the same as in the chapter **First Proof**. The symmetric encryption is IND-CPA secure and the MAC is SUF-CMA secure.  
+construction again. The assumptions on the cryptographic primitives are the same as in the chapter **First Proof**: The symmetric encryption is IND-CPA-secure and the MAC is SUF-CMA-secure.  
 Your goal is to prove that Enc-then-MAC is then
-<a href="https://en.wikipedia.org/wiki/Ciphertext_indistinguishability#Indistinguishability_under_chosen_ciphertext_attack/adaptive_chosen_ciphertext_attack_(IND-CCA1,_IND-CCA2)" target="_blank">IND-CCA2</a>
-secure using CryptoVerif.
+<a href="https://en.wikipedia.org/wiki/Ciphertext_indistinguishability#Indistinguishability_under_chosen_ciphertext_attack/adaptive_chosen_ciphertext_attack_(IND-CCA1,_IND-CCA2)" target="_blank">IND-CCA2-secure</a> using CryptoVerif.
 
 
 You can orientate yourself on the input file
@@ -147,7 +146,7 @@ presented in the chapter **First Proof**. You may require to have a look at hint
 >  ![Could not load image.](img/Challenge_CCA2_EncThenMac_Decryption.png)
 >
 > The Enc-then-MAC decryption function _full\_dec_ has three parameters. It requires the ciphertext _c_ of type _bitstring_, the encryption key _k_ of type _key_, and the MAC key _mk_ of type _mkey_.  
-> First, it separates the ciphertext _c_ of the Enc-then-MAC encryption back to the “regular” ciphertext _c1_ and the MAC _mac1_. If the ciphertext _c_ was of incorrect format and therefore could not be split into _c1_ and _mac1_, the function returns bottom.  
+> First, it separates the ciphertext _c_ of the Enc-then-MAC encryption back into the actual encryption ciphertext _c1_ and the MAC _mac1_. If the ciphertext _c_ was of incorrect format and therefore could not be split into _c1_ and _mac1_, the function returns bottom.  
 > Then, it is checked whether the MAC _mac1_ is valid. This is done by calling the verification function _verify_, providing the ciphertext _c1_, the MAC key _mk_, and the MAC _mac1_ as parameters. If the verification succeeds, the decryption of the ciphertext _c1_ under the decryption key (same as the encryption key) _k_ is returned. If the verification fails, the function returns bottom.
 >  </details>
 >
@@ -157,9 +156,9 @@ presented in the chapter **First Proof**. You may require to have a look at hint
 >  ![Could not load image.](img/Challenge_CCA2_Oracles.png)
 >
 > The encryption oracle _QencLR_ is almost the same as in the IND-CPA proof presented in the chapter **First Proof**. As we need to give an adversary access to a decryption oracle, we require preventing that an adversary can win the IND-CCA2 game trivially. That is, excluding that an adversary can send a ciphertext produced by the encryption oracle directly to the decryption oracle.  
-> We do this by keeping track of the outputted  ciphertexts in a table. First, we create a table called _ciphertexts_, which can contain elements of the type _bitstring_. Inside the oracle _Oenc_ we will insert the generated ciphertext _c0_ into the table.
+> We do this by keeping track of the returned ciphertexts in a table. First, we create a table called _ciphertexts_, which can contain elements of the type _bitstring_. Inside the oracle _Oenc_ we will insert the generated ciphertext _c0_ into the table.
 >
-> The decryption oracle _Qdec_ has two parameters. It requires the encryption key _k_ of type _key_ and the MAC key _mk_ of type _mkey_. Similar to the encryption oracle, we use oracle replication for the decryption oracle as well. The oracle _Odec_ takes a ciphertext _c_ as input. Note that the decryption oracle is not a left-or-right oracle, so we do not have inputs like _c1_ and _c2_. We check if the ciphertext _c_, queried by the adversary, is inside the table _ciphertexts_ and has thereby been outputted  by the encryption oracle earlier. If this is the case, the function returns bottom. Otherwise, the Enc-then-MAC decryption is returned.
+> The decryption oracle _Qdec_ has two parameters. It requires the encryption key _k_ of type _key_ and the MAC key _mk_ of type _mkey_. Similar to the encryption oracle, we use oracle replication for the decryption oracle as well. The oracle _Odec_ takes a ciphertext _c_ as input. Note that the decryption oracle is not a left-or-right oracle, so we do not have inputs like _c1_ and _c2_. We check whether the ciphertext _c_, queried by the adversary, is inside the table _ciphertexts_ and has therefore been returned by the encryption oracle earlier. If this is the case, the function returns bottom. Otherwise, the Enc-then-MAC decryption is returned.
 >
 > The parameters _qEnc_ and _qDec_ used for the oracle replication are declared at the top of the input file.  
 >  ![Could not load image.](img/Challenge_CCA2_Params.png)

@@ -8,7 +8,6 @@
 
         <!-- Custom HTML head -->
         
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -34,13 +33,13 @@
     </head>
     <body>
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -56,7 +55,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -68,7 +67,7 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
             var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
@@ -99,7 +98,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -132,7 +131,7 @@
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -143,7 +142,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="-self-study"><a class="header" href="#-self-study">📝 Self-Study</a></h1>
-<p>In this chapter, you are welcome to have a look at how CryptoVerif proves the authenticated key exchange protocol <em>signed Diffie-Hellman</em> secure in a multi-party, multi-session environment.</p>
+<p>In this chapter, you are welcome to have a look at how CryptoVerif proves the authenticated key exchange protocol <em>signed Diffie-Hellman</em> secure in a multi-user, multi-session environment.</p>
 <p>We will not have an in-depth look at every line of the input file as in the chapter <strong>First Proof</strong>. You will recognize many similar structures. We will have a look at some code snippets, discussing the most important differences.<br />
 One interesting aspect, for example, is how CryptoVerif excludes <em>malicious accepts</em>.<br />
 Further, in this proof, you can see how CryptoVerif can be guided through the proof (interactive mode). </p>
@@ -170,11 +169,11 @@ To be more precise, when this query is proven it means that party <em>A</em> can
 <h2 id="interactive-mode"><a class="header" href="#interactive-mode">Interactive mode</a></h2>
 <p>It is possible to run CryptoVerif in interactive mode. This might be necessary for complex protocols. In the interactive mode, you can guide CryptoVerif through the proof. In this section, we will have a look at how to use the interactive mode.</p>
 <p><img src="img/SelfStudy_InteractiveMode.png" alt="Could not load image." /></p>
-<p>We need to add a <em>proof</em> environment to the input file as depicted above. With the keyword <strong>out_game</strong> we can specify a filename and save the current game inside. To make the proof interactive, we use the keyword <strong>interactive</strong>. Note that this way the CryptoVerif will ask in the console for the next command and thereby ignores the rest inside the <em>proof</em> environment. If you delete the <strong>interactive</strong> keyword, CryptoVerif would follow this given proof structure. You can take this part which is ignored to know what commands you should type in the console in interactive mode of CryptoVerif.</p>
+<p>We need to add a <em>proof</em> environment to the input file as depicted above. With the keyword <strong>out_game</strong> we can specify a filename and save the current game inside. To make the proof interactive, we use the keyword <strong>interactive</strong>. Note that this way CryptoVerif will ask in the console for the next command instead of continuing with the rest of the <em>proof</em> environment. If you delete the <strong>interactive</strong> keyword, CryptoVerif would follow this given proof structure. You can take this part which is ignored to know what commands you should type in the console in CryptoVerif's interactive mode.</p>
 <p>You can apply a cryptographic assumption on a function using a command like <strong>crypto assumption(function)</strong>. This will apply the defined equivalence (compare <em>ind_cpa(enc)</em> in the chapter <strong>First Proof</strong>). In our example, we will apply the ROM assumption on the hashfunction <em>hash</em> first. The second cryptographic assumption we apply is the UF-CMA assumption on the signature function <em>sign</em>. The protocol uses this signature function multiple times, and therefore we also want to apply the assumption multiple times. We need to indicate this by adding a star at the end of the command.<br />
 In interactive mode, you can type the command <strong>success</strong> at any time and CryptoVerif will try to prove the queries. When you type the command <strong>success</strong> after applying the two assumptions mentioned before, you can see that the queries for excluding <em>malicious accepts</em> can already be proven at this point. The remaining queries for the secrecy of <em>keyA</em> and <em>keyB</em> remain unproven. Use the command <strong>simplify</strong> to simplify the current game. At this point, this would remove the events from the current game as they are no longer needed.<br />
 Next, apply the CDH assumption on the function <em>exp</em>. After this you can use the command <strong>success</strong> again, and you will see that now all queries have been proven.</p>
-<p>During interactive mode, the command <strong>quit</strong> can be used to leave interactive mode and CryptoVerif continues non-interactively.</p>
+<p>During interactive mode, the command <strong>quit</strong> can be used to leave interactive mode. Then, CryptoVerif continues with the next commands in the proof environment.</p>
 <blockquote>
 <p>ℹ️ Note that CryptoVerif is also able to prove the Signed DH protocol in automatic mode.</p>
 </blockquote>
@@ -202,37 +201,21 @@ Next, apply the CDH assumption on the function <em>exp</em>. After this you can 
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
 
 
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
 

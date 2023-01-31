@@ -1,6 +1,6 @@
 # 📝 Self-Study
 
-In this chapter, you are welcome to have a look at how CryptoVerif proves the authenticated key exchange protocol _signed Diffie-Hellman_ secure in a multi-party, multi-session environment.
+In this chapter, you are welcome to have a look at how CryptoVerif proves the authenticated key exchange protocol _signed Diffie-Hellman_ secure in a multi-user, multi-session environment.
 
 We will not have an in-depth look at every line of the input file as in the chapter **First Proof**. You will recognize many similar structures. We will have a look at some code snippets, discussing the most important differences.  
 One interesting aspect, for example, is how CryptoVerif excludes _malicious accepts_.  
@@ -53,13 +53,13 @@ It is possible to run CryptoVerif in interactive mode. This might be necessary f
 
 ![Could not load image.](img/SelfStudy_InteractiveMode.png)
 
-We need to add a _proof_ environment to the input file as depicted above. With the keyword **out_game** we can specify a filename and save the current game inside. To make the proof interactive, we use the keyword **interactive**. Note that this way the CryptoVerif will ask in the console for the next command and thereby ignores the rest inside the _proof_ environment. If you delete the **interactive** keyword, CryptoVerif would follow this given proof structure. You can take this part which is ignored to know what commands you should type in the console in interactive mode of CryptoVerif.
+We need to add a _proof_ environment to the input file as depicted above. With the keyword **out_game** we can specify a filename and save the current game inside. To make the proof interactive, we use the keyword **interactive**. Note that this way CryptoVerif will ask in the console for the next command instead of continuing with the rest of the _proof_ environment. If you delete the **interactive** keyword, CryptoVerif would follow this given proof structure. You can take this part which is ignored to know what commands you should type in the console in CryptoVerif's interactive mode.
 
 You can apply a cryptographic assumption on a function using a command like **crypto assumption(function)**. This will apply the defined equivalence (compare _ind\_cpa(enc)_ in the chapter **First Proof**). In our example, we will apply the ROM assumption on the hashfunction _hash_ first. The second cryptographic assumption we apply is the UF-CMA assumption on the signature function _sign_. The protocol uses this signature function multiple times, and therefore we also want to apply the assumption multiple times. We need to indicate this by adding a star at the end of the command.  
 In interactive mode, you can type the command **success** at any time and CryptoVerif will try to prove the queries. When you type the command **success** after applying the two assumptions mentioned before, you can see that the queries for excluding _malicious accepts_ can already be proven at this point. The remaining queries for the secrecy of _keyA_ and _keyB_ remain unproven. Use the command **simplify** to simplify the current game. At this point, this would remove the events from the current game as they are no longer needed.  
 Next, apply the CDH assumption on the function _exp_. After this you can use the command **success** again, and you will see that now all queries have been proven.
 
-During interactive mode, the command **quit** can be used to leave interactive mode and CryptoVerif continues non-interactively.
+During interactive mode, the command **quit** can be used to leave interactive mode. Then, CryptoVerif continues with the next commands in the proof environment.
 
 
 > ℹ️ Note that CryptoVerif is also able to prove the Signed DH protocol in automatic mode.
