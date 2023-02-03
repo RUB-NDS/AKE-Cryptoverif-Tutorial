@@ -15,6 +15,10 @@ Now you are ready to start getting to know CryptoVerif.
 
 * [Official Tutorial](https://bblanche.gitlabpages.inria.fr/CryptoVerif/tutorial/index.html)
 
+## License
+
+This tutorial is free software licensed under the 2-clause BSD license, see LICENSE.md.
+
 ## Author
 
 This tutorial is made by Marc Hafner. The tutorial was done as a Master's project at the Chair for Network and Data Security, Ruhr-University Bochum.  
