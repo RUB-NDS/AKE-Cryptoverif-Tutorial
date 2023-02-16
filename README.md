@@ -1,4 +1,4 @@
-# AKE-Crytoverif-Tutorial
+# AKE-Cryptoverif-Tutorial
 
   This tutorial is for the automatic protocol prover [CryptoVerif](https://bblanche.gitlabpages.inria.fr/CryptoVerif/).
 To start the tutorial follow these steps:
