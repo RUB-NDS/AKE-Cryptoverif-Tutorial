@@ -4,9 +4,9 @@
 To start the tutorial follow these steps:
 1. Clone this GitHub repository to a directory of your choice.
 ````
-git clone https://github.com/RUB-NDS/AKE-Crytoverif-Tutorial.git
+git clone https://github.com/RUB-NDS/AKE-Cryptoverif-Tutorial.git
 ````
-2. Open *AKE-Crytoverif-Tutorial\Tutorial_mdbook\book\index.html* with a browser of your choice (tested on Firefox).
+2. Open *AKE-Cryptoverif-Tutorial\Tutorial_mdbook\book\index.html* with a browser of your choice (tested on Firefox).
 
 You can switch chapters using the panel on the left or by clicking the arrows at the side of each page.
 Now you are ready to start getting to know CryptoVerif.
